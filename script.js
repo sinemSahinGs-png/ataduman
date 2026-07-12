@@ -79,6 +79,9 @@ let isMoving = false;
 let lastMoveTime = 0;
 let touchDrawing = false;
 let heroInView = true;
+let touchGesture = null; // 'draw' | 'scroll' | null
+let touchStartX = 0;
+let touchStartY = 0;
 
 function createPlaceholderTexture(hex) {
   const c = document.createElement('canvas');
@@ -314,76 +317,104 @@ window.addEventListener('pointermove', (e) => {
   updatePointer(e.clientX, e.clientY);
 });
 
+function classifyTouchGesture(clientX, clientY) {
+  if (touchGesture) return touchGesture;
+  const dx = clientX - touchStartX;
+  const dy = clientY - touchStartY;
+  const ax = Math.abs(dx);
+  const ay = Math.abs(dy);
+  if (ax < 8 && ay < 8) return null;
+  // Mostly vertical → page scroll; otherwise paint the reveal
+  touchGesture = ay > ax * 1.15 ? 'scroll' : 'draw';
+  return touchGesture;
+}
+
+function beginTouch(clientX, clientY) {
+  touchStartX = clientX;
+  touchStartY = clientY;
+  touchGesture = null;
+  touchDrawing = false;
+}
+
+function moveTouch(e, clientX, clientY) {
+  const mode = classifyTouchGesture(clientX, clientY);
+  if (mode === 'scroll') {
+    touchDrawing = false;
+    isMoving = false;
+    return;
+  }
+  if (mode === 'draw') {
+    e.preventDefault();
+    if (!touchDrawing) {
+      touchDrawing = true;
+      updatePointer(clientX, clientY, { seed: true });
+    } else {
+      updatePointer(clientX, clientY);
+    }
+  }
+}
+
+function endTouch() {
+  // Short tap (no scroll/draw lock) still reveals a small spot
+  if (!touchGesture) {
+    updatePointer(touchStartX, touchStartY, { seed: true });
+  }
+  touchDrawing = false;
+  touchGesture = null;
+  isMoving = false;
+  lastMoveTime = performance.now();
+}
+
 canvas.addEventListener(
   'pointerdown',
   (e) => {
     if (e.pointerType === 'mouse') return;
-    e.preventDefault();
-    touchDrawing = true;
     try {
       canvas.setPointerCapture(e.pointerId);
     } catch {
       /* ignore */
     }
-    updatePointer(e.clientX, e.clientY, { seed: true });
+    beginTouch(e.clientX, e.clientY);
   },
-  { passive: false }
+  { passive: true }
 );
 
 canvas.addEventListener(
   'pointermove',
   (e) => {
-    if (!touchDrawing) return;
     if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
-    e.preventDefault();
-    updatePointer(e.clientX, e.clientY);
+    if (touchGesture === 'scroll') return;
+    moveTouch(e, e.clientX, e.clientY);
   },
   { passive: false }
 );
 
-function endTouchDraw(e) {
-  if (e.pointerType === 'mouse') return;
-  touchDrawing = false;
-  isMoving = false;
-  lastMoveTime = performance.now();
-}
+canvas.addEventListener('pointerup', endTouch, { passive: true });
+canvas.addEventListener('pointercancel', endTouch, { passive: true });
 
-canvas.addEventListener('pointerup', endTouchDraw, { passive: true });
-canvas.addEventListener('pointercancel', endTouchDraw, { passive: true });
-
-/* Fallback for browsers that under-deliver pointer events on canvas */
 canvas.addEventListener(
   'touchstart',
   (e) => {
     if (!e.touches.length) return;
-    e.preventDefault();
-    touchDrawing = true;
     const t = e.touches[0];
-    updatePointer(t.clientX, t.clientY, { seed: true });
+    beginTouch(t.clientX, t.clientY);
   },
-  { passive: false }
+  { passive: true }
 );
 
 canvas.addEventListener(
   'touchmove',
   (e) => {
-    if (!touchDrawing || !e.touches.length) return;
-    e.preventDefault();
+    if (!e.touches.length) return;
+    if (touchGesture === 'scroll') return;
     const t = e.touches[0];
-    updatePointer(t.clientX, t.clientY);
+    moveTouch(e, t.clientX, t.clientY);
   },
   { passive: false }
 );
 
-canvas.addEventListener(
-  'touchend',
-  () => {
-    touchDrawing = false;
-    isMoving = false;
-    lastMoveTime = performance.now();
-  },
-  { passive: true }
-);
+canvas.addEventListener('touchend', endTouch, { passive: true });
+canvas.addEventListener('touchcancel', endTouch, { passive: true });
 
 window.addEventListener('resize', () => {
   const w = window.innerWidth;
