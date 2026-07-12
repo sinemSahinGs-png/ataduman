@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATA DUMAN — Özel Web Sitesi Tasarımı</title>
+    <meta
+      name="description"
+      content="Ata Duman — özel web sitesi tasarımı, web geliştirme, Instagram otomasyonu, içerik tasarımı ve promosyon ürün tasarımı."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Righteous&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <svg
+      class="contour-bg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1440 900"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path d="M0,42 C180,58 360,18 540,48 C720,78 900,22 1080,52 C1260,82 1380,38 1440,48" />
+      <path d="M0,98 C160,120 340,70 520,105 C700,140 880,75 1060,110 C1240,145 1360,90 1440,105" />
+      <path d="M0,155 C200,175 380,130 560,160 C740,190 920,135 1100,165 C1280,195 1380,150 1440,160" />
+      <path d="M0,210 C170,240 350,185 530,220 C710,255 890,190 1070,225 C1250,260 1370,205 1440,220" />
+      <path d="M0,268 C190,290 370,245 550,275 C730,305 910,250 1090,280 C1270,310 1380,265 1440,275" />
+      <path d="M0,325 C150,355 340,300 520,335 C700,370 880,305 1060,340 C1240,375 1365,320 1440,335" />
+      <path d="M0,382 C210,400 390,355 570,385 C750,415 930,360 1110,390 C1290,420 1385,375 1440,385" />
+      <path d="M0,440 C175,470 360,415 540,450 C720,485 900,420 1080,455 C1260,490 1375,435 1440,450" />
+      <path d="M0,498 C195,515 375,470 555,500 C735,530 915,475 1095,505 C1275,535 1380,490 1440,500" />
+      <path d="M0,555 C160,585 345,530 525,565 C705,600 885,535 1065,570 C1245,605 1370,550 1440,565" />
+      <path d="M0,612 C205,630 385,585 565,615 C745,645 925,590 1105,620 C1285,650 1385,605 1440,615" />
+      <path d="M0,670 C170,700 355,645 535,680 C715,715 895,650 1075,685 C1255,720 1375,665 1440,680" />
+      <path d="M0,728 C190,745 370,700 550,730 C730,760 910,705 1090,735 C1270,765 1380,720 1440,730" />
+      <path d="M0,785 C155,815 340,760 520,795 C700,830 880,765 1060,800 C1240,835 1365,780 1440,795" />
+      <path d="M0,842 C200,860 380,815 560,845 C740,875 920,820 1100,850 C1280,880 1385,835 1440,845" />
+    </svg>
+
+    <!-- Decorative code environment (behind content) -->
+    <div class="code-env" aria-hidden="true">
+      <div class="code-env-grid"></div>
+      <pre class="code-frag code-frag--a" data-interactive="true" data-opacity="0.08" style="--d:0s;--dur:14s;--ox:0.08">
+<span class="tok-key">const</span> experience = {
+  strategy: <span class="tok-bool">true</span>,
+  design: <span class="tok-bool">true</span>,
+  development: <span class="tok-bool">true</span>,
+  automation: <span class="tok-bool">true</span>
+};</pre>
+      <pre class="code-frag code-frag--b" data-interactive="true" data-opacity="0.07" data-mobile="hide" style="--d:1.2s;--dur:16s;--ox:0.07">
+<span class="tok-key">function</span> <span class="tok-fn">buildDigitalSystem</span>() {
+  <span class="tok-key">return</span> design
+    .<span class="tok-fn">connect</span>(development)
+    .<span class="tok-fn">deploy</span>();
+}</pre>
+      <pre class="code-frag code-frag--c" data-opacity="0.06" data-mobile="hide" style="--d:2.4s;--dur:12s;--ox:0.06">
+<span class="tok-key">interface</span> <span class="tok-type">Project</span> {
+  design: <span class="tok-type">string</span>;
+  development: <span class="tok-type">string</span>;
+  automation?: <span class="tok-type">boolean</span>;
+}</pre>
+      <pre class="code-frag code-frag--d" data-interactive="true" data-opacity="0.07" style="--d:0.8s;--dur:15s;--ox:0.07">
+<span class="tok-comment">// gsap timeline · restrained</span>
+timeline.<span class="tok-fn">to</span>(node, {
+  opacity: <span class="tok-num">0.12</span>,
+  duration: <span class="tok-num">1.2</span>,
+  ease: <span class="tok-str">'sine.inOut'</span>
+});</pre>
+      <pre class="code-frag code-frag--e" data-zone="works" data-opacity="0.05" data-mobile="hide" style="--d:3s;--dur:18s;--ox:0.05">
+<span class="tok-key">async function</span> <span class="tok-fn">fetchCase</span>(id) {
+  <span class="tok-key">const</span> res = <span class="tok-key">await</span> fetch(<span class="tok-str">`/api/works/${id}`</span>);
+  <span class="tok-key">return</span> res.json();
+}</pre>
+      <pre class="code-frag code-frag--f" data-zone="works" data-opacity="0.06" style="--d:1.6s;--dur:13s;--ox:0.06">
+<span class="tok-key">export const</span> system = {
+  mode: <span class="tok-str">'BUILD'</span>,
+  status: <span class="tok-str">'ONLINE'</span>,
+  nodes: [<span class="tok-str">'design'</span>, <span class="tok-str">'dev'</span>]
+};</pre>
+      <pre class="code-frag code-frag--g" data-opacity="0.05" data-mobile="hide" style="--d:4s;--dur:17s;--ox:0.05">
+&lt;<span class="tok-type">Motion</span> path=<span class="tok-str">"hero"</span> ease=<span class="tok-str">"power1.inOut"</span> /&gt;</pre>
+      <pre class="code-frag code-frag--h" data-zone="works" data-opacity="0.055" data-mobile="hide" style="--d:2s;--dur:11s;--ox:0.055">
+workflow.<span class="tok-fn">automate</span>({
+  channel: <span class="tok-str">'instagram'</span>,
+  cadence: <span class="tok-str">'quiet'</span>
+});</pre>
+      <span class="code-pulse"></span>
+    </div>
+
+    <nav class="site-nav" aria-label="Ana menü">
+      <a class="nav-brand" href="#top">ATA DUMAN</a>
+      <button
+        class="nav-index"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-menu"
+        id="menu-toggle"
+      >
+        <span class="nav-index-label">Anasayfa</span>
+        <span class="nav-index-glyph" aria-hidden="true">
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </nav>
+
+    <div
+      class="site-menu"
+      id="site-menu"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-label="Site indeksi"
+    >
+      <ol class="site-menu-list">
+        <li style="--i: 0">
+          <a href="#about"><span>01</span> Hakkında</a>
+        </li>
+        <li style="--i: 1">
+          <a href="#works"><span>02</span> Geliştirilen Sistemler</a>
+        </li>
+        <li style="--i: 2">
+          <a href="#portfolio"><span>03</span> Portfolyo</a>
+        </li>
+        <li style="--i: 3">
+          <a href="#capabilities"><span>04</span> Yetenekler</a>
+        </li>
+        <li style="--i: 4">
+          <a href="#process"><span>05</span> Süreç</a>
+        </li>
+        <li style="--i: 5">
+          <a href="#commission"><span>06</span> İletişim</a>
+        </li>
+      </ol>
+    </div>
+
+    <section class="hero" id="top" aria-label="Portre görünümü">
+      <div class="hero-field" aria-hidden="true">
+        <div class="hero-glow"></div>
+        <div class="hero-scan"></div>
+        <svg class="hero-hud" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid meet">
+          <circle cx="200" cy="250" r="148" />
+          <circle cx="200" cy="250" r="118" />
+          <path d="M52,250 A148,148 0 0,1 200,102" />
+          <path d="M348,250 A148,148 0 0,1 200,398" />
+          <line x1="200" y1="70" x2="200" y2="95" />
+          <line x1="200" y1="405" x2="200" y2="430" />
+          <line x1="40" y1="250" x2="65" y2="250" />
+          <line x1="335" y1="250" x2="360" y2="250" />
+          <line x1="188" y1="250" x2="212" y2="250" />
+          <line x1="200" y1="238" x2="200" y2="262" />
+          <polyline points="70,90 70,70 90,70" />
+          <polyline points="330,90 330,70 310,70" />
+          <polyline points="70,410 70,430 90,430" />
+          <polyline points="330,410 330,430 310,430" />
+        </svg>
+        <span class="hero-label hero-label--1">SYSTEM / ONLINE</span>
+        <span class="hero-label hero-label--2">DESIGN ENGINE</span>
+        <span class="hero-label hero-label--3">BUILD MODE</span>
+        <span class="hero-label hero-label--4">DEPLOY READY</span>
+        <span class="hero-label hero-label--5">NODE 01</span>
+        <span class="hero-label hero-label--6">INTERFACE ACTIVE</span>
+      </div>
+      <canvas></canvas>
+      <div class="hero-copy">
+        <p class="hero-meta">Portfolyo / 2026</p>
+        <h1 class="hero-title">WEB<br />SİSTEMLERİ</h1>
+        <p class="hero-tag">
+          Strateji, arayüz ve kodla kurulan<br />
+          markaya özel dijital deneyimler.
+        </p>
+        <p class="hero-desc">Web tasarımı / Geliştirme / Otomasyon</p>
+      </div>
+    </section>
+
+    <main class="main">
+      <div class="marquee" data-reveal aria-hidden="true">
+        <div class="marquee-track">
+          <span>ATA DUMAN</span><span class="dot"></span>
+          <span>Özel Web Sitesi Tasarımı</span><span class="dot"></span>
+          <span>Web Geliştirme</span><span class="dot"></span>
+          <span>Instagram Otomasyonu</span><span class="dot"></span>
+          <span>İçerik Tasarımı</span><span class="dot"></span>
+          <span>Promosyon Ürün Tasarımı</span><span class="dot"></span>
+          <span>ATA DUMAN</span><span class="dot"></span>
+          <span>Özel Web Sitesi Tasarımı</span><span class="dot"></span>
+          <span>Web Geliştirme</span><span class="dot"></span>
+          <span>Instagram Otomasyonu</span><span class="dot"></span>
+          <span>İçerik Tasarımı</span><span class="dot"></span>
+          <span>Promosyon Ürün Tasarımı</span><span class="dot"></span>
+        </div>
+      </div>
+
+      <div class="index-strip" data-reveal>
+        <span>N — 01</span>
+        <span class="rule-inline"></span>
+        <span>Anasayfa 2025 / 2026</span>
+        <span class="rule-inline"></span>
+        <span>Sayı 001</span>
+        <span class="rule-inline"></span>
+        <span>Rotasyonda</span>
+      </div>
+
+      <section class="section about" id="about">
+        <header class="section-head" data-reveal>
+          <p class="section-meta">01 — Hakkında / Manifesto</p>
+          <p class="section-folio">s. 014</p>
+        </header>
+        <div class="about-grid">
+          <div class="about-lead">
+            <h2 class="about-title">
+              <span class="about-title-line">
+                <span class="hero-word">MARKANIZA</span>
+              </span>
+              <span class="about-title-line">
+                <span class="hero-word">ÖZEL</span>
+                <span class="hero-word hero-word--accent">WEB</span>
+              </span>
+              <span class="about-title-line">
+                <span class="hero-word hero-word--accent">SİTELERİ</span><span class="hero-word hero-word--dot">.</span>
+              </span>
+            </h2>
+            <p class="about-services">
+              <span class="about-service">KURUMSAL WEB</span>
+              <span class="about-services-sep">/</span>
+              <span class="about-service">GELİŞTİRME</span>
+              <span class="about-services-sep">/</span>
+              <span class="about-service">OTOMASYON</span>
+              <span class="about-services-sep">/</span>
+              <span class="about-service">İÇERİK</span>
+              <span class="about-services-sep">/</span>
+              <span class="about-service">PROMOSYON</span>
+            </p>
+          </div>
+          <div class="about-body">
+            <p class="lede about-block">
+              <span class="drop-cap" aria-hidden="true">A</span><span class="sr-only">Ata</span><span aria-hidden="true">ta</span>
+              Duman; kurumsal web tasarımı, web geliştirme ve dijital otomasyon
+              alanlarında çalışan bağımsız bir tasarımcı ve geliştiricidir.
+            </p>
+            <p class="about-block">
+              Her proje; markanın hedeflerine, içerik yapısına ve kullanıcı
+              ihtiyaçlarına göre sıfırdan planlanır. Sonuç; hızlı, mobil uyumlu,
+              yönetilebilir ve markaya özel bir web sitesidir.
+            </p>
+            <p class="about-block">
+              Instagram otomasyonu, içerik tasarımı ve promosyon ürünleri; web
+              projelerini destekleyen tamamlayıcı hizmetlerdir.
+            </p>
+            <dl class="meta-list">
+              <div class="meta-row">
+                <dt>Sınıf</dt>
+                <dd>Web Tasarımı &amp; Geliştirme</dd>
+              </div>
+              <div class="meta-row">
+                <dt>Yaklaşım</dt>
+                <dd>Markaya Özel · Sıfırdan</dd>
+              </div>
+              <div class="meta-row">
+                <dt>Odak</dt>
+                <dd>Kurumsal Web · Otomasyon</dd>
+              </div>
+              <div class="meta-row">
+                <dt>Durum</dt>
+                <dd><span class="status-dot"></span> Yeni projelere açık</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="section works" id="works" data-reveal>
+        <header class="section-head">
+          <p class="section-meta">02 — Geliştirilen Sistemler</p>
+          <p class="section-folio">s. 028</p>
+        </header>
+        <h2 class="section-title">Geliştirilen Sistemler</h2>
+
+        <ol class="work-list">
+          <li class="work" data-reveal>
+            <div class="work-visual">
+              <span class="work-badge">01</span>
+              <!-- Görsel: public/work-01.png -->
+              <img
+                class="work-image"
+                src="/work-01.png?v=2"
+                alt="Web tasarımı projesi"
+                width="800"
+                height="600"
+                loading="lazy"
+              />
+            </div>
+            <div class="work-info">
+              <p class="work-meta">(01 / 03) · Tasarım · 2025</p>
+              <h3 class="work-title">Özel Web Sitesi Tasarımı</h3>
+              <p class="work-body">
+                Netlik, hiyerarşi ve hareket etrafında kurulan premium web
+                siteleri — şablon gibi değil, düşünülmüş hissi veren işler.
+              </p>
+              <ul class="work-tags">
+                <li>Tasarım</li>
+                <li>Sanat yönetimi</li>
+                <li>UI</li>
+              </ul>
+              <a class="work-cta" href="#commission">Projeyi gör →</a>
+            </div>
+          </li>
+
+          <li class="work" data-reveal>
+            <div class="work-visual">
+              <span class="work-badge">02</span>
+              <!-- Görsel: public/work-02.png -->
+              <img
+                class="work-image"
+                src="/work-02.png?v=2"
+                alt="Web geliştirme projesi"
+                width="800"
+                height="600"
+                loading="lazy"
+              />
+            </div>
+            <div class="work-info">
+              <p class="work-meta">(02 / 03) · Geliştirme · 2025</p>
+              <h3 class="work-title">Uygulama Geliştirme</h3>
+              <p class="work-body">
+                Tasarımı koruyan front-end üretimi — performans, etkileşim ve
+                üretimde temiz kalan sistemler.
+              </p>
+              <ul class="work-tags">
+                <li>Front-end</li>
+                <li>Hareket</li>
+                <li>Sistemler</li>
+              </ul>
+              <a class="work-cta" href="#commission">Projeyi gör →</a>
+            </div>
+          </li>
+
+          <li class="work" data-reveal>
+            <div class="work-visual">
+              <span class="work-badge">03</span>
+              <!-- Görsel: public/work-03.png -->
+              <img
+                class="work-image"
+                src="/work-03.png?v=2"
+                alt="Otomasyon projesi"
+                width="800"
+                height="600"
+                loading="lazy"
+              />
+            </div>
+            <div class="work-info">
+              <p class="work-meta">(03 / 03) · Otomasyon · 2026</p>
+              <h3 class="work-title">Instagram Otomasyonu</h3>
+              <p class="work-body">
+                İçerik ritmi için sakin işletim sistemleri — günlük sürtünme
+                olmadan tutarlı varlık sağlayan akışlar.
+              </p>
+              <ul class="work-tags">
+                <li>Otomasyon</li>
+                <li>İş akışı</li>
+                <li>Sosyal</li>
+              </ul>
+              <a class="work-cta" href="#commission">Projeyi gör →</a>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section archive" id="portfolio" data-reveal>
+        <header class="section-head">
+          <p class="section-meta">03 — Portfolyo</p>
+          <p class="section-folio">s. 036</p>
+        </header>
+        <h2 class="section-title">Portfolyo</h2>
+        <div class="archive-grid">
+          <a
+            class="study study--site"
+            href="https://octoair.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <div class="study-visual">
+              <img class="study-image" src="/site-01.png" alt="Octo Air" width="640" height="800" />
+            </div>
+            <figcaption>
+              <span class="study-name">Octo Air</span>
+              <span class="study-url">octoair.com.tr</span>
+            </figcaption>
+          </a>
+          <a
+            class="study study--site"
+            href="https://kxrgx.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <div class="study-visual">
+              <img class="study-image" src="/site-02.png" alt="KXRGX" width="640" height="800" />
+            </div>
+            <figcaption>
+              <span class="study-name">KXRGX</span>
+              <span class="study-url">kxrgx.com.tr</span>
+            </figcaption>
+          </a>
+          <a
+            class="study study--site"
+            href="https://tetratek.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <div class="study-visual">
+              <img class="study-image" src="/site-03.png" alt="Tetratek" width="640" height="800" />
+            </div>
+            <figcaption>
+              <span class="study-name">Tetratek</span>
+              <span class="study-url">tetratek.com.tr</span>
+            </figcaption>
+          </a>
+          <a
+            class="study study--site"
+            href="https://vigidesign.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <div class="study-visual">
+              <img class="study-image" src="/site-04.png" alt="Vigi Design" width="640" height="800" />
+            </div>
+            <figcaption>
+              <span class="study-name">Vigi Design</span>
+              <span class="study-url">vigidesign.com.tr</span>
+            </figcaption>
+          </a>
+          <a
+            class="study study--site"
+            href="https://octostudio.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <div class="study-visual">
+              <img class="study-image" src="/site-05.png" alt="Octo Studio" width="640" height="800" />
+            </div>
+            <figcaption>
+              <span class="study-name">Octo Studio</span>
+              <span class="study-url">octostudio.com.tr</span>
+            </figcaption>
+          </a>
+          <a
+            class="study study--site"
+            href="https://memoora.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+          >
+            <div class="study-visual">
+              <img class="study-image" src="/site-06.png" alt="Memoora" width="640" height="800" />
+            </div>
+            <figcaption>
+              <span class="study-name">Memoora</span>
+              <span class="study-url">memoora.com.tr</span>
+            </figcaption>
+          </a>
+        </div>
+      </section>
+
+      <section class="section capabilities" id="capabilities" data-reveal>
+        <header class="section-head">
+          <p class="section-meta">04 — Yetenekler</p>
+          <p class="section-folio">s. 042</p>
+        </header>
+        <h2 class="section-title">Yetenekler</h2>
+        <div class="capabilities-grid">
+          <article class="cap-card" data-reveal>
+            <p class="cap-index">↳ 01</p>
+            <h3 class="cap-title">Özel Web Sitesi Tasarımı</h3>
+            <p class="cap-body">
+              Varlık sahibi bir site isteyen markalar için sanat yönetimi, yerleşim
+              sistemleri ve arayüz tasarımı.
+            </p>
+            <p class="cap-tags">Tasarım · UI · Yönlendirme</p>
+          </article>
+          <article class="cap-card" data-reveal>
+            <p class="cap-index">↳ 02</p>
+            <h3 class="cap-title">Web Geliştirme</h3>
+            <p class="cap-body">
+              Hareket, yapı ve performansın zanaatın parçası sayıldığı front-end
+              uygulaması.
+            </p>
+            <p class="cap-tags">Kod · Hareket · Üretim</p>
+          </article>
+          <article class="cap-card" data-reveal>
+            <p class="cap-index">↳ 03</p>
+            <h3 class="cap-title">Instagram Otomasyonu</h3>
+            <p class="cap-body">
+              Marka ritmine göre kurgulanmış zamanlama, akışlar ve içerik
+              operasyonu — jenerik araçlar değil.
+            </p>
+            <p class="cap-tags">Sosyal · Sistem · Ritim</p>
+          </article>
+          <article class="cap-card" data-reveal>
+            <p class="cap-index">↳ 04</p>
+            <h3 class="cap-title">İçerik &amp; Ürünler</h3>
+            <p class="cap-body">
+              Dijital sistemle hizalı kalan içerik tasarımı ve promosyon ürün
+              çalışmaları.
+            </p>
+            <p class="cap-tags">İçerik · Baskı · Promo</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section process" id="process" data-reveal>
+        <header class="section-head">
+          <p class="section-meta">05 — Süreç</p>
+          <p class="section-folio">s. 056</p>
+        </header>
+        <h2 class="section-title">Süreç</h2>
+        <div class="process-steps">
+          <article class="process-step" data-reveal>
+            <p class="process-num">01</p>
+            <h3 class="process-label">Brief</h3>
+            <p class="process-body">
+              Tek cümleye indirgenmiş bir brief. Moodboard’dan çok kısıtlar
+              tercih edilir.
+            </p>
+          </article>
+          <article class="process-step" data-reveal>
+            <p class="process-num">02</p>
+            <h3 class="process-label">Konsept</h3>
+            <p class="process-body">
+              Yapı, tipografi ve etkileşim; site açıklama gerektirmeden konuşana
+              kadar düzenlenir.
+            </p>
+          </article>
+          <article class="process-step" data-reveal>
+            <p class="process-num">03</p>
+            <h3 class="process-label">İnce ayar</h3>
+            <p class="process-body">
+              Boşluk, hareket ve hiyerarşi; hiçbir şey rastgele hissedilene kadar
+              ayarlanır.
+            </p>
+          </article>
+          <article class="process-step" data-reveal>
+            <p class="process-num">04</p>
+            <h3 class="process-label">Deneyim</h3>
+            <p class="process-body">
+              Tam bir teslimat — tasarım, geliştirme ve ayakta duran sistemler.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section cta" id="commission" data-reveal>
+        <header class="section-head section-head--dark">
+          <p class="section-meta">06 — Proje / İletişim</p>
+          <p class="section-folio">s. 084</p>
+        </header>
+        <h2 class="cta-heading">
+          <span>YENİ SİTEN</span>
+          <em>burada</em>
+          <span>BAŞLASIN.</span>
+        </h2>
+        <p class="cta-body">
+          Kurumsal web sitesi, otomasyon veya dijital içerik projenizin
+          detaylarını paylaşın. Bir iş günü içinde geri dönüş sağlanır.
+        </p>
+        <a class="cta-button" href="mailto:ata.duman@hotmail.com">
+          PROJEYİ BAŞLAT
+          <span class="cta-glyph" aria-hidden="true">→</span>
+        </a>
+        <div class="cta-meta">
+          <a href="mailto:ata.duman@hotmail.com">ata.duman@hotmail.com</a>
+          <span class="rule-inline rule-inline--light"></span>
+          <span>Dünya çapında uygun</span>
+        </div>
+      </section>
+
+      <footer class="footer" data-reveal>
+        <div class="footer-top">
+          <p class="footer-brand">ATA DUMAN</p>
+          <p class="footer-tag"><em>Tasarım sistemleri / İnşa edilen deneyimler</em></p>
+        </div>
+        <div class="footer-contact">
+          <a href="mailto:ata.duman@hotmail.com">ata.duman@hotmail.com</a>
+        </div>
+      </footer>
+    </main>
+
+    <script type="module" src="/script.js"></script>
+    <script>
+      (function () {
+        var toggle = document.getElementById('menu-toggle');
+        var menu = document.getElementById('site-menu');
+        var html = document.documentElement;
+        var closeTimer = null;
+
+        function openMenu() {
+          if (closeTimer) {
+            clearTimeout(closeTimer);
+            closeTimer = null;
+          }
+          menu.hidden = false;
+          menu.setAttribute('aria-hidden', 'false');
+          toggle.setAttribute('aria-expanded', 'true');
+          requestAnimationFrame(function () {
+            menu.classList.add('is-open');
+            html.classList.add('menu-open');
+          });
+        }
+
+        function closeMenu() {
+          menu.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          html.classList.remove('menu-open');
+          menu.setAttribute('aria-hidden', 'true');
+          closeTimer = setTimeout(function () {
+            menu.hidden = true;
+            closeTimer = null;
+          }, 480);
+        }
+
+        toggle.addEventListener('click', function () {
+          if (toggle.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+            closeMenu();
+          }
+        });
+
+        menu.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', closeMenu);
+        });
+
+        menu.hidden = true;
+
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var targets = document.querySelectorAll('[data-reveal]');
+
+        if (reduce) {
+          targets.forEach(function (el) {
+            el.classList.add('is-visible');
+          });
+        } else {
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+          );
+          targets.forEach(function (el) {
+            observer.observe(el);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
