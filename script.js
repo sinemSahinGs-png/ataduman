@@ -6,6 +6,7 @@ import {
 } from './shaders.js';
 import './code-env.js';
 import './about-anim.js';
+import './cta-anim.js';
 
 const isCoarsePointer =
   window.matchMedia('(pointer: coarse)').matches ||

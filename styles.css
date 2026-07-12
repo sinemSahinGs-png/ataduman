@@ -1479,7 +1479,19 @@ button {
   margin-bottom: 1.75rem;
 }
 
-.cta-heading em {
+.cta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.12em 0.28em;
+}
+
+.cta-word {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.cta-heading em,
+.cta-word--soft {
   font-family: var(--font-mono);
   font-style: italic;
   font-weight: 300;
