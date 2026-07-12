@@ -14,10 +14,10 @@ const isCoarsePointer =
 const CONFIG = {
   // Simulation render-target size (square, ping-pong)
   simSize: isCoarsePointer ? 320 : 500,
-  // Trail mask
-  decay: isCoarsePointer ? 0.992 : 0.97,
-  lineWidth: isCoarsePointer ? 0.2 : 0.09,
-  perFrameIntensity: isCoarsePointer ? 0.55 : 0.3,
+  // Trail mask — mobile: finger-sized stroke, no auto-fill
+  decay: isCoarsePointer ? 0.985 : 0.97,
+  lineWidth: isCoarsePointer ? 0.11 : 0.09,
+  perFrameIntensity: isCoarsePointer ? 0.38 : 0.3,
   // Reveal threshold (display shader)
   revealThreshold: 0.02,
   edgeWidthBase: 0.004, // divided by uDpr in shader
@@ -25,12 +25,13 @@ const CONFIG = {
   haloUpperMul: 2.0, // halo upper bound = revealThreshold * this
   haloMixStrength: 0.35,
   haloGray: [0.12, 0.12, 0.12],
-  // Idle auto-trail — phones start immediately with a full-frame sweep
-  idleThresholdMs: isCoarsePointer ? 0 : 2500,
-  idleEaseInMs: isCoarsePointer ? 180 : 1500,
-  autoLerp: isCoarsePointer ? 0.22 : 0.05,
-  // Mouse stop detection
-  stopAfterMs: isCoarsePointer ? 120 : 50,
+  // Idle auto-trail — disabled on phones (manual finger paint only)
+  enableAutoTrail: !isCoarsePointer,
+  idleThresholdMs: 2500,
+  idleEaseInMs: 1500,
+  autoLerp: 0.05,
+  // Mouse / finger stop detection
+  stopAfterMs: isCoarsePointer ? 80 : 50,
   // Max texture size
   maxTextureSize: isCoarsePointer ? 2048 : 4096,
 };
@@ -195,8 +196,8 @@ scene.add(displayMesh);
 const simMesh = new THREE.Mesh(geometry, trailsMaterial);
 simScene.add(simMesh);
 
-const autoMouse = new THREE.Vector2(0.12, 0.12);
-const prevAutoMouse = new THREE.Vector2(0.12, 0.12);
+const autoMouse = new THREE.Vector2(0.5, 0.5);
+const prevAutoMouse = new THREE.Vector2(0.5, 0.5);
 
 if (hero && 'IntersectionObserver' in window) {
   const io = new IntersectionObserver(
@@ -208,23 +209,12 @@ if (hero && 'IntersectionObserver' in window) {
   io.observe(hero);
 }
 
-function getDesktopAutoTarget(now) {
+function getAutoTarget(now) {
   const t = now * 0.001;
   return {
     x: 0.5 + 0.3 * Math.sin(t * 0.41) + 0.12 * Math.sin(t * 0.93 + 1.3),
     y: 0.5 + 0.28 * Math.cos(t * 0.37 + 0.5) + 0.1 * Math.cos(t * 1.11 + 2.7),
   };
-}
-
-/** Zigzag sweep so the bottom portrait fills in without hover on phones */
-function getMobileAutoTarget(now) {
-  const rows = 9;
-  const cycle = ((now * 0.00042) % 1) * rows;
-  const row = Math.floor(cycle);
-  const xInRow = cycle - row;
-  const y = 0.06 + (row / (rows - 1)) * 0.88;
-  const x = row % 2 === 0 ? 0.06 + xInRow * 0.88 : 0.94 - xInRow * 0.88;
-  return { x, y };
 }
 
 function animate() {
@@ -238,6 +228,7 @@ function animate() {
 
   const idleTime = now - lastMoveTime;
   const autoActive =
+    CONFIG.enableAutoTrail &&
     !touchDrawing &&
     heroInView &&
     idleTime > CONFIG.idleThresholdMs;
@@ -254,9 +245,7 @@ function animate() {
       Math.max(0, idleTime - CONFIG.idleThresholdMs) / CONFIG.idleEaseInMs
     );
 
-    const target = isCoarsePointer
-      ? getMobileAutoTarget(now)
-      : getDesktopAutoTarget(now);
+    const target = getAutoTarget(now);
 
     prevAutoMouse.copy(autoMouse);
     autoMouse.x += (target.x - autoMouse.x) * CONFIG.autoLerp * easeIn;
@@ -308,7 +297,8 @@ function updatePointer(clientX, clientY, { seed = false } = {}) {
 
   if (seed) {
     mouse.set(x, y);
-    prevMouse.set(x - 0.015, y);
+    // Tiny offset so the first frame still draws a stroke segment
+    prevMouse.set(x - 0.008, y);
   } else {
     prevMouse.copy(mouse);
     mouse.set(x, y);
@@ -328,6 +318,7 @@ canvas.addEventListener(
   'pointerdown',
   (e) => {
     if (e.pointerType === 'mouse') return;
+    e.preventDefault();
     touchDrawing = true;
     try {
       canvas.setPointerCapture(e.pointerId);
@@ -336,7 +327,7 @@ canvas.addEventListener(
     }
     updatePointer(e.clientX, e.clientY, { seed: true });
   },
-  { passive: true }
+  { passive: false }
 );
 
 canvas.addEventListener(
@@ -344,9 +335,10 @@ canvas.addEventListener(
   (e) => {
     if (!touchDrawing) return;
     if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+    e.preventDefault();
     updatePointer(e.clientX, e.clientY);
   },
-  { passive: true }
+  { passive: false }
 );
 
 function endTouchDraw(e) {
@@ -358,6 +350,40 @@ function endTouchDraw(e) {
 
 canvas.addEventListener('pointerup', endTouchDraw, { passive: true });
 canvas.addEventListener('pointercancel', endTouchDraw, { passive: true });
+
+/* Fallback for browsers that under-deliver pointer events on canvas */
+canvas.addEventListener(
+  'touchstart',
+  (e) => {
+    if (!e.touches.length) return;
+    e.preventDefault();
+    touchDrawing = true;
+    const t = e.touches[0];
+    updatePointer(t.clientX, t.clientY, { seed: true });
+  },
+  { passive: false }
+);
+
+canvas.addEventListener(
+  'touchmove',
+  (e) => {
+    if (!touchDrawing || !e.touches.length) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    updatePointer(t.clientX, t.clientY);
+  },
+  { passive: false }
+);
+
+canvas.addEventListener(
+  'touchend',
+  () => {
+    touchDrawing = false;
+    isMoving = false;
+    lastMoveTime = performance.now();
+  },
+  { passive: true }
+);
 
 window.addEventListener('resize', () => {
   const w = window.innerWidth;
