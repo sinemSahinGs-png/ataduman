@@ -14,6 +14,8 @@ uniform vec2 uPrevMouse;
 uniform vec2 uResolution;
 uniform float uDecay;
 uniform bool uIsMoving;
+uniform float uLineWidth;
+uniform float uIntensity;
 varying vec2 vUv;
 
 void main() {
@@ -24,14 +26,18 @@ void main() {
     vec2 dir = uMouse - uPrevMouse;
     float len = length(dir);
 
-    if (len > 0.001) {
+    if (len > 0.0005) {
       vec2 d = dir / len;
       vec2 toPx = vUv - uPrevMouse;
       float proj = clamp(dot(toPx, d), 0.0, len);
       vec2 closest = uPrevMouse + proj * d;
       float dist = length(vUv - closest);
-      float lineWidth = 0.09;
-      float intensity = smoothstep(lineWidth, 0.0, dist) * 0.3;
+      float intensity = smoothstep(uLineWidth, 0.0, dist) * uIntensity;
+      newValue += intensity;
+    } else {
+      // Stationary press / tap still leaves a reveal blob
+      float dist = length(vUv - uMouse);
+      float intensity = smoothstep(uLineWidth * 0.85, 0.0, dist) * uIntensity;
       newValue += intensity;
     }
   }

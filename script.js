@@ -7,13 +7,17 @@ import {
 import './code-env.js';
 import './about-anim.js';
 
+const isCoarsePointer =
+  window.matchMedia('(pointer: coarse)').matches ||
+  window.matchMedia('(hover: none)').matches;
+
 const CONFIG = {
   // Simulation render-target size (square, ping-pong)
-  simSize: 500,
+  simSize: isCoarsePointer ? 320 : 500,
   // Trail mask
-  decay: 0.97,
-  lineWidth: 0.09,
-  perFrameIntensity: 0.3,
+  decay: isCoarsePointer ? 0.992 : 0.97,
+  lineWidth: isCoarsePointer ? 0.2 : 0.09,
+  perFrameIntensity: isCoarsePointer ? 0.55 : 0.3,
   // Reveal threshold (display shader)
   revealThreshold: 0.02,
   edgeWidthBase: 0.004, // divided by uDpr in shader
@@ -21,25 +25,27 @@ const CONFIG = {
   haloUpperMul: 2.0, // halo upper bound = revealThreshold * this
   haloMixStrength: 0.35,
   haloGray: [0.12, 0.12, 0.12],
-  // Idle auto-trail
-  idleThresholdMs: 2500,
-  idleEaseInMs: 1500,
-  autoLerp: 0.05,
+  // Idle auto-trail — phones start immediately with a full-frame sweep
+  idleThresholdMs: isCoarsePointer ? 0 : 2500,
+  idleEaseInMs: isCoarsePointer ? 180 : 1500,
+  autoLerp: isCoarsePointer ? 0.22 : 0.05,
   // Mouse stop detection
-  stopAfterMs: 50,
+  stopAfterMs: isCoarsePointer ? 120 : 50,
   // Max texture size
-  maxTextureSize: 4096,
+  maxTextureSize: isCoarsePointer ? 2048 : 4096,
 };
 
 const canvas = document.querySelector('.hero canvas');
+const hero = document.querySelector('.hero');
 
 const renderer = new THREE.WebGLRenderer({
   canvas,
-  antialias: true,
+  antialias: !isCoarsePointer,
   precision: 'highp',
+  powerPreference: 'high-performance',
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarsePointer ? 1.75 : 2));
 
 const scene = new THREE.Scene();
 const simScene = new THREE.Scene();
@@ -49,7 +55,8 @@ const rtOptions = {
   minFilter: THREE.LinearFilter,
   magFilter: THREE.LinearFilter,
   format: THREE.RGBAFormat,
-  type: THREE.FloatType,
+  // Half float is far more reliable on iOS / mobile GPUs than FloatType
+  type: THREE.HalfFloatType,
 };
 
 const pingPong = [
@@ -69,6 +76,8 @@ const mouse = new THREE.Vector2(0.5, 0.5);
 const prevMouse = new THREE.Vector2(0.5, 0.5);
 let isMoving = false;
 let lastMoveTime = 0;
+let touchDrawing = false;
+let heroInView = true;
 
 function createPlaceholderTexture(hex) {
   const c = document.createElement('canvas');
@@ -155,6 +164,8 @@ const trailsMaterial = new THREE.ShaderMaterial({
     },
     uDecay: { value: CONFIG.decay },
     uIsMoving: { value: false },
+    uLineWidth: { value: CONFIG.lineWidth },
+    uIntensity: { value: CONFIG.perFrameIntensity },
   },
 });
 
@@ -170,7 +181,7 @@ const displayMaterial = new THREE.ShaderMaterial({
     },
     uTopTextureSize: { value: topTextureSize },
     uBottomTextureSize: { value: bottomTextureSize },
-    uDpr: { value: Math.min(window.devicePixelRatio, 2) },
+    uDpr: { value: Math.min(window.devicePixelRatio, isCoarsePointer ? 1.75 : 2) },
   },
 });
 
@@ -184,8 +195,37 @@ scene.add(displayMesh);
 const simMesh = new THREE.Mesh(geometry, trailsMaterial);
 simScene.add(simMesh);
 
-const autoMouse = new THREE.Vector2(0.5, 0.5);
-const prevAutoMouse = new THREE.Vector2(0.5, 0.5);
+const autoMouse = new THREE.Vector2(0.12, 0.12);
+const prevAutoMouse = new THREE.Vector2(0.12, 0.12);
+
+if (hero && 'IntersectionObserver' in window) {
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      heroInView = entry.isIntersecting && entry.intersectionRatio > 0.15;
+    },
+    { threshold: [0, 0.15, 0.4] }
+  );
+  io.observe(hero);
+}
+
+function getDesktopAutoTarget(now) {
+  const t = now * 0.001;
+  return {
+    x: 0.5 + 0.3 * Math.sin(t * 0.41) + 0.12 * Math.sin(t * 0.93 + 1.3),
+    y: 0.5 + 0.28 * Math.cos(t * 0.37 + 0.5) + 0.1 * Math.cos(t * 1.11 + 2.7),
+  };
+}
+
+/** Zigzag sweep so the bottom portrait fills in without hover on phones */
+function getMobileAutoTarget(now) {
+  const rows = 9;
+  const cycle = ((now * 0.00042) % 1) * rows;
+  const row = Math.floor(cycle);
+  const xInRow = cycle - row;
+  const y = 0.06 + (row / (rows - 1)) * 0.88;
+  const x = row % 2 === 0 ? 0.06 + xInRow * 0.88 : 0.94 - xInRow * 0.88;
+  return { x, y };
+}
 
 function animate() {
   requestAnimationFrame(animate);
@@ -197,7 +237,10 @@ function animate() {
   }
 
   const idleTime = now - lastMoveTime;
-  const autoActive = idleTime > CONFIG.idleThresholdMs;
+  const autoActive =
+    !touchDrawing &&
+    heroInView &&
+    idleTime > CONFIG.idleThresholdMs;
 
   const prevTarget = pingPong[currentTarget];
   currentTarget = (currentTarget + 1) % 2;
@@ -208,22 +251,16 @@ function animate() {
   if (autoActive) {
     const easeIn = Math.min(
       1,
-      (idleTime - CONFIG.idleThresholdMs) / CONFIG.idleEaseInMs
+      Math.max(0, idleTime - CONFIG.idleThresholdMs) / CONFIG.idleEaseInMs
     );
 
-    const t = now * 0.001;
-    const targetX =
-      0.5 +
-      0.3 * Math.sin(t * 0.41) +
-      0.12 * Math.sin(t * 0.93 + 1.3);
-    const targetY =
-      0.5 +
-      0.28 * Math.cos(t * 0.37 + 0.5) +
-      0.1 * Math.cos(t * 1.11 + 2.7);
+    const target = isCoarsePointer
+      ? getMobileAutoTarget(now)
+      : getDesktopAutoTarget(now);
 
     prevAutoMouse.copy(autoMouse);
-    autoMouse.x += (targetX - autoMouse.x) * CONFIG.autoLerp * easeIn;
-    autoMouse.y += (targetY - autoMouse.y) * CONFIG.autoLerp * easeIn;
+    autoMouse.x += (target.x - autoMouse.x) * CONFIG.autoLerp * easeIn;
+    autoMouse.y += (target.y - autoMouse.y) * CONFIG.autoLerp * easeIn;
 
     trailsMaterial.uniforms.uMouse.value.copy(autoMouse);
     trailsMaterial.uniforms.uPrevMouse.value.copy(prevAutoMouse);
@@ -248,53 +285,84 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function updatePointer(clientX, clientY) {
+function pointerToUv(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
-  const inside =
-    clientX >= rect.left &&
-    clientX <= rect.right &&
-    clientY >= rect.top &&
-    clientY <= rect.bottom;
-
-  if (inside) {
-    prevMouse.copy(mouse);
-    mouse.x = (clientX - rect.left) / rect.width;
-    mouse.y = 1 - (clientY - rect.top) / rect.height;
-    isMoving = true;
-    lastMoveTime = performance.now();
-  } else {
-    isMoving = false;
-  }
+  return {
+    inside:
+      clientX >= rect.left &&
+      clientX <= rect.right &&
+      clientY >= rect.top &&
+      clientY <= rect.bottom,
+    x: (clientX - rect.left) / rect.width,
+    y: 1 - (clientY - rect.top) / rect.height,
+  };
 }
 
-window.addEventListener('mousemove', (e) => {
+function updatePointer(clientX, clientY, { seed = false } = {}) {
+  const { inside, x, y } = pointerToUv(clientX, clientY);
+
+  if (!inside) {
+    isMoving = false;
+    return false;
+  }
+
+  if (seed) {
+    mouse.set(x, y);
+    prevMouse.set(x - 0.015, y);
+  } else {
+    prevMouse.copy(mouse);
+    mouse.set(x, y);
+  }
+
+  isMoving = true;
+  lastMoveTime = performance.now();
+  return true;
+}
+
+window.addEventListener('pointermove', (e) => {
+  if (e.pointerType === 'touch' || e.pointerType === 'pen') return;
   updatePointer(e.clientX, e.clientY);
 });
 
-window.addEventListener(
-  'touchmove',
+canvas.addEventListener(
+  'pointerdown',
   (e) => {
-    if (!e.touches.length) return;
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    const inside =
-      touch.clientX >= rect.left &&
-      touch.clientX <= rect.right &&
-      touch.clientY >= rect.top &&
-      touch.clientY <= rect.bottom;
-
-    if (inside) {
-      e.preventDefault();
+    if (e.pointerType === 'mouse') return;
+    touchDrawing = true;
+    try {
+      canvas.setPointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
     }
-    updatePointer(touch.clientX, touch.clientY);
+    updatePointer(e.clientX, e.clientY, { seed: true });
   },
-  { passive: false }
+  { passive: true }
 );
+
+canvas.addEventListener(
+  'pointermove',
+  (e) => {
+    if (!touchDrawing) return;
+    if (e.pointerType !== 'touch' && e.pointerType !== 'pen') return;
+    updatePointer(e.clientX, e.clientY);
+  },
+  { passive: true }
+);
+
+function endTouchDraw(e) {
+  if (e.pointerType === 'mouse') return;
+  touchDrawing = false;
+  isMoving = false;
+  lastMoveTime = performance.now();
+}
+
+canvas.addEventListener('pointerup', endTouchDraw, { passive: true });
+canvas.addEventListener('pointercancel', endTouchDraw, { passive: true });
 
 window.addEventListener('resize', () => {
   const w = window.innerWidth;
   const h = window.innerHeight;
-  const dpr = Math.min(window.devicePixelRatio, 2);
+  const dpr = Math.min(window.devicePixelRatio, isCoarsePointer ? 1.75 : 2);
 
   renderer.setSize(w, h);
   renderer.setPixelRatio(dpr);
