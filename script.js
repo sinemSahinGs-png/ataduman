@@ -14,10 +14,13 @@ const isCoarsePointer =
 const CONFIG = {
   // Simulation render-target size (square, ping-pong)
   simSize: isCoarsePointer ? 320 : 500,
-  // Trail mask — mobile: finger-sized stroke, no auto-fill
-  decay: isCoarsePointer ? 0.985 : 0.97,
+  // Trail mask — manual stroke
+  decay: 0.97,
   lineWidth: isCoarsePointer ? 0.11 : 0.09,
   perFrameIntensity: isCoarsePointer ? 0.38 : 0.3,
+  // Subtle idle wander (thin, local — not a full-screen wipe)
+  autoLineWidth: 0.05,
+  autoIntensity: 0.18,
   // Reveal threshold (display shader)
   revealThreshold: 0.02,
   edgeWidthBase: 0.004, // divided by uDpr in shader
@@ -25,11 +28,11 @@ const CONFIG = {
   haloUpperMul: 2.0, // halo upper bound = revealThreshold * this
   haloMixStrength: 0.35,
   haloGray: [0.12, 0.12, 0.12],
-  // Idle auto-trail — disabled on phones (manual finger paint only)
-  enableAutoTrail: !isCoarsePointer,
-  idleThresholdMs: 2500,
-  idleEaseInMs: 1500,
-  autoLerp: 0.05,
+  // Idle auto-trail on all devices — gentle meander when idle
+  enableAutoTrail: true,
+  idleThresholdMs: isCoarsePointer ? 900 : 2200,
+  idleEaseInMs: isCoarsePointer ? 700 : 1400,
+  autoLerp: 0.035,
   // Mouse / finger stop detection
   stopAfterMs: isCoarsePointer ? 80 : 50,
   // Max texture size
@@ -214,9 +217,10 @@ if (hero && 'IntersectionObserver' in window) {
 
 function getAutoTarget(now) {
   const t = now * 0.001;
+  // Small local meander — like a quiet cursor, not a wipe across the frame
   return {
-    x: 0.5 + 0.3 * Math.sin(t * 0.41) + 0.12 * Math.sin(t * 0.93 + 1.3),
-    y: 0.5 + 0.28 * Math.cos(t * 0.37 + 0.5) + 0.1 * Math.cos(t * 1.11 + 2.7),
+    x: 0.54 + 0.13 * Math.sin(t * 0.33) + 0.05 * Math.sin(t * 0.77 + 1.2),
+    y: 0.5 + 0.11 * Math.cos(t * 0.27 + 0.35) + 0.045 * Math.cos(t * 0.91 + 2.1),
   };
 }
 
@@ -233,6 +237,7 @@ function animate() {
   const autoActive =
     CONFIG.enableAutoTrail &&
     !touchDrawing &&
+    touchGesture !== 'draw' &&
     heroInView &&
     idleTime > CONFIG.idleThresholdMs;
 
@@ -254,6 +259,8 @@ function animate() {
     autoMouse.x += (target.x - autoMouse.x) * CONFIG.autoLerp * easeIn;
     autoMouse.y += (target.y - autoMouse.y) * CONFIG.autoLerp * easeIn;
 
+    trailsMaterial.uniforms.uLineWidth.value = CONFIG.autoLineWidth;
+    trailsMaterial.uniforms.uIntensity.value = CONFIG.autoIntensity;
     trailsMaterial.uniforms.uMouse.value.copy(autoMouse);
     trailsMaterial.uniforms.uPrevMouse.value.copy(prevAutoMouse);
     trailsMaterial.uniforms.uIsMoving.value = true;
@@ -261,6 +268,8 @@ function animate() {
     mouse.copy(autoMouse);
     prevMouse.copy(prevAutoMouse);
   } else {
+    trailsMaterial.uniforms.uLineWidth.value = CONFIG.lineWidth;
+    trailsMaterial.uniforms.uIntensity.value = CONFIG.perFrameIntensity;
     trailsMaterial.uniforms.uMouse.value.copy(mouse);
     trailsMaterial.uniforms.uPrevMouse.value.copy(prevMouse);
     trailsMaterial.uniforms.uIsMoving.value = isMoving;
