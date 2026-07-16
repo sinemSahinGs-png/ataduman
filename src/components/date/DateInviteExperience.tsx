@@ -2,11 +2,14 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { DateAmbientBackground } from '@/components/date/DateAmbientBackground';
+import { DateGlassCard } from '@/components/date/DateGlassCard';
 import { DatePickerCard } from '@/components/date/DatePickerCard';
 import { FloatingHearts } from '@/components/date/FloatingHearts';
 import { HeartConfetti } from '@/components/date/HeartConfetti';
 import { RunawayNoButton } from '@/components/date/RunawayNoButton';
 import { SuccessScreen } from '@/components/date/SuccessScreen';
+import { YesButton } from '@/components/date/YesButton';
 import { buildQuestion } from '@/lib/date/utils';
 import type { DateInvite, DateResponse } from '@/lib/date/supabase';
 
@@ -17,6 +20,8 @@ type Props = {
   initialResponse: DateResponse | null;
   cookieAnsweredDate: string | null;
 };
+
+const DEFAULT_HINT = 'Bir jest yeter — doğru olanı seçin.';
 
 function storageKey(slug: string) {
   return `date_answered_${slug}`;
@@ -47,13 +52,11 @@ export function DateInviteExperience({
   const yesRef = useRef<HTMLButtonElement>(null);
 
   const initialDate =
-    initialResponse?.selected_date ||
-    cookieAnsweredDate ||
-    null;
+    initialResponse?.selected_date || cookieAnsweredDate || null;
 
   const [phase, setPhase] = useState<Phase>(initialDate ? 'success' : 'question');
   const [selectedDate, setSelectedDate] = useState(initialDate || '');
-  const [hint, setHint] = useState('Cevabınızı dikkatli seçmeniz önerilir.');
+  const [hint, setHint] = useState(DEFAULT_HINT);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [celebrate, setCelebrate] = useState(Boolean(initialDate));
@@ -99,7 +102,7 @@ export function DateInviteExperience({
 
   useEffect(() => {
     if (phase !== 'success' || calm) return;
-    const t = window.setTimeout(() => setCalm(true), 6000);
+    const t = window.setTimeout(() => setCalm(true), 4800);
     return () => window.clearTimeout(t);
   }, [phase, calm]);
 
@@ -144,6 +147,7 @@ export function DateInviteExperience({
         /* ignore */
       }
       setCelebrate(true);
+      setCalm(false);
       setPhase('success');
     } catch {
       setError('Bağlantı hatası. Lütfen tekrar deneyin.');
@@ -152,85 +156,78 @@ export function DateInviteExperience({
     }
   };
 
+  const tone =
+    phase === 'success' ? (calm ? 'calm' : 'celebrate') : 'default';
+
   if (!invite.is_active && phase === 'question' && !initialDate) {
     return (
-      <div className="relative flex min-h-[100dvh] items-center justify-center bg-[#f7efe8] px-4">
-        <p className="rounded-3xl bg-white/80 px-6 py-8 text-center text-[#5c1a2a] shadow-lg">
-          Bu davet şu an aktif değil.
-        </p>
+      <div className="relative flex min-h-[100dvh] items-center justify-center px-5">
+        <DateAmbientBackground />
+        <DateGlassCard>
+          <p className="text-center text-[15px] text-[#5c3340]">
+            Bu davet şu an aktif değil.
+          </p>
+        </DateGlassCard>
       </div>
     );
   }
 
   return (
-    <div
-      className={`relative flex min-h-[100dvh] items-center justify-center overflow-x-hidden px-4 py-8 transition-colors duration-1000 ${
-        phase === 'success'
-          ? calm
-            ? 'bg-gradient-to-b from-[#f8e7ee] via-[#f3d5df] to-[#e8c4cf]'
-            : 'bg-gradient-to-b from-[#f4c2d0] via-[#e89aaf] to-[#8b1e3f]'
-          : 'bg-[#f7efe8]'
-      }`}
-    >
-      <FloatingHearts count={phase === 'success' ? 28 : 16} />
+    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-x-hidden px-5 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
+      <DateAmbientBackground tone={tone} />
+      <FloatingHearts count={phase === 'success' ? 10 : 6} />
       <HeartConfetti active={celebrate && phase === 'success' && !calm} />
 
-      <motion.div
-        ref={cardRef}
-        layout
-        className="relative z-10 w-full max-w-lg overflow-hidden rounded-[2rem] border border-white/60 bg-white/55 p-6 shadow-[0_20px_60px_rgba(92,26,42,0.12)] backdrop-blur-xl sm:p-8"
-      >
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            background:
-              'radial-gradient(circle at 20% 10%, rgba(255,215,180,0.45), transparent 40%), radial-gradient(circle at 80% 0%, rgba(244,180,196,0.35), transparent 35%)',
-          }}
-        />
-
-        <div className="relative">
+      <div className="relative z-10 w-full">
+        <DateGlassCard cardRef={cardRef}>
           <AnimatePresence mode="wait">
             {phase === 'question' ? (
               <motion.div
                 key="q"
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35 }}
+                exit={{ opacity: 0, y: -12, transition: { duration: 0.28 } }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="flex min-h-[21.5rem] flex-col"
               >
-                <p className="mb-4 text-center text-xs font-medium uppercase tracking-[0.2em] text-[#9a6b74]">
-                  Size özel bir soru var 💌
+                <p className="mb-5 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-[#9a7480]">
+                  Size özel bir soru var
                 </p>
-                <h1 className="mb-4 text-center font-serif text-[1.65rem] leading-snug text-[#4a1f2c] sm:text-4xl">
+
+                <h1 className="mb-6 text-balance text-center font-serif text-[1.65rem] font-medium leading-[1.28] tracking-[-0.02em] text-[#3d1f2a] sm:text-[1.9rem]">
                   {question}
                 </h1>
-                <p className="mb-8 min-h-[1.25rem] text-center text-sm text-[#8a5a64]">{hint}</p>
 
-                <div className="relative flex min-h-[3.5rem] flex-wrap items-center justify-center gap-3">
-                  <button
-                    ref={yesRef}
-                    type="button"
-                    onClick={onYes}
-                    className="relative z-10 rounded-full bg-gradient-to-r from-[#8b1e3f] to-[#c2314d] px-8 py-3.5 text-base font-semibold text-white shadow-[0_0_24px_rgba(194,49,77,0.45)] transition hover:scale-105 active:scale-[0.98]"
-                  >
-                    EVET 💖
-                  </button>
-                  <RunawayNoButton
-                    cardRef={cardRef}
-                    yesRef={yesRef}
-                    onHintChange={setHint}
-                  />
+                <div className="mx-auto mb-auto min-h-[2.5rem] max-w-[16rem] text-center text-[13px] leading-relaxed text-[#8a6570]">
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={hint}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
+                      transition={{ duration: 0.28 }}
+                      className="block"
+                    >
+                      {hint}
+                    </motion.span>
+                  </AnimatePresence>
+                </div>
+
+                <div className="mt-8 grid w-full grid-cols-2 items-stretch gap-3 sm:gap-4">
+                  <YesButton ref={yesRef} onClick={onYes} />
+                  <div className="relative min-h-[52px]">
+                    <RunawayNoButton
+                      cardRef={cardRef}
+                      yesRef={yesRef}
+                      onHintChange={setHint}
+                    />
+                  </div>
                 </div>
               </motion.div>
             ) : null}
 
             {phase === 'picking' ? (
-              <motion.div
-                key="pick"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-              >
+              <motion.div key="pick">
                 <DatePickerCard
                   selectedDate={selectedDate}
                   onChange={setSelectedDate}
@@ -242,7 +239,7 @@ export function DateInviteExperience({
             ) : null}
 
             {phase === 'success' ? (
-              <motion.div key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.div key="ok">
                 <SuccessScreen
                   name={invite.name}
                   honorific={invite.honorific}
@@ -252,8 +249,8 @@ export function DateInviteExperience({
               </motion.div>
             ) : null}
           </AnimatePresence>
-        </div>
-      </motion.div>
+        </DateGlassCard>
+      </div>
     </div>
   );
 }

@@ -3,49 +3,37 @@
 import { useReducedMotion } from 'framer-motion';
 import { useMemo } from 'react';
 
-type Props = {
-  count?: number;
-  className?: string;
-};
-
-export function FloatingHearts({ count = 18, className = '' }: Props) {
+/** Sparse, soft accents — not a heart storm */
+export function FloatingHearts({ count = 7 }: { count?: number }) {
   const reduce = useReducedMotion();
   const hearts = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
         id: i,
-        left: `${(i * 37) % 100}%`,
-        size: 10 + (i % 5) * 4,
-        delay: (i % 10) * 0.7,
-        duration: 12 + (i % 6) * 2.5,
-        opacity: 0.15 + (i % 5) * 0.06,
+        left: `${8 + ((i * 13) % 80)}%`,
+        size: 8 + (i % 3) * 2,
+        delay: i * 1.1,
+        duration: 14 + (i % 4) * 2,
+        opacity: 0.12 + (i % 3) * 0.04,
       })),
     [count]
   );
 
-  if (reduce) {
-    return (
-      <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden>
-        <div className="absolute left-[12%] top-[18%] text-2xl text-rose-300/30">♥</div>
-        <div className="absolute right-[16%] top-[28%] text-xl text-rose-400/25">♥</div>
-        <div className="absolute bottom-[22%] left-[40%] text-3xl text-[#8b1e3f]/20">♥</div>
-      </div>
-    );
-  }
+  if (reduce) return null;
 
   return (
-    <div className={`pointer-events-none absolute inset-0 overflow-hidden ${className}`} aria-hidden>
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
       {hearts.map((h) => (
         <span
           key={h.id}
-          className="date-float-heart absolute text-rose-400"
+          className="date-float-heart absolute text-[#b57a86]"
           style={{
             left: h.left,
-            bottom: '-10%',
+            bottom: '-6%',
             fontSize: h.size,
+            opacity: h.opacity,
             animationDelay: `${h.delay}s`,
             animationDuration: `${h.duration}s`,
-            opacity: h.opacity,
           }}
         >
           ♥

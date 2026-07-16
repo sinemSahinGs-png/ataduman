@@ -3,14 +3,10 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
-type Props = {
-  active: boolean;
-};
-
-export function HeartConfetti({ active }: Props) {
+export function HeartConfetti({ active }: { active: boolean }) {
   const reduce = useReducedMotion();
   const [items, setItems] = useState<
-    { id: number; x: number; delay: number; size: number; rot: number }[]
+    { id: number; x: number; delay: number; size: number; rot: number; color: string }[]
   >([]);
 
   useEffect(() => {
@@ -18,16 +14,18 @@ export function HeartConfetti({ active }: Props) {
       setItems([]);
       return;
     }
+    const colors = ['#6b2a3c', '#b57a86', '#c4a484', '#9d5c6c'];
     setItems(
-      Array.from({ length: 48 }, (_, i) => ({
+      Array.from({ length: 14 }, (_, i) => ({
         id: i,
-        x: Math.random() * 100,
-        delay: Math.random() * 0.8,
-        size: 14 + Math.random() * 22,
-        rot: -40 + Math.random() * 80,
+        x: 10 + Math.random() * 80,
+        delay: Math.random() * 0.45,
+        size: 9 + Math.random() * 11,
+        rot: -24 + Math.random() * 48,
+        color: colors[i % colors.length],
       }))
     );
-    const t = window.setTimeout(() => setItems([]), 6500);
+    const t = window.setTimeout(() => setItems([]), 4800);
     return () => window.clearTimeout(t);
   }, [active, reduce]);
 
@@ -37,20 +35,16 @@ export function HeartConfetti({ active }: Props) {
         {items.map((item) => (
           <motion.span
             key={item.id}
-            initial={{ y: '105%', opacity: 0, x: `${item.x}vw`, rotate: 0 }}
-            animate={{
-              y: '-20%',
-              opacity: [0, 1, 1, 0],
-              rotate: item.rot,
-            }}
+            initial={{ y: '108%', opacity: 0, left: `${item.x}%` }}
+            animate={{ y: '-12%', opacity: [0, 0.75, 0.75, 0], rotate: item.rot }}
             exit={{ opacity: 0 }}
             transition={{
-              duration: 4.8 + Math.random(),
+              duration: 3.4 + Math.random() * 0.6,
               delay: item.delay,
-              ease: 'easeOut',
+              ease: [0.22, 1, 0.36, 1],
             }}
-            className="absolute bottom-0 text-rose-500"
-            style={{ fontSize: item.size, left: 0 }}
+            className="absolute bottom-0"
+            style={{ fontSize: item.size, color: item.color }}
           >
             ♥
           </motion.span>

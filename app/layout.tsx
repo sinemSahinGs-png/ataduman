@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Manrope } from 'next/font/google';
+import { Instrument_Serif, Outfit } from 'next/font/google';
 import './globals.css';
 
-const serif = Cormorant_Garamond({
+const serif = Instrument_Serif({
   subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '600', '700'],
+  weight: '400',
   variable: '--font-date-serif',
 });
 
-const sans = Manrope({
+const sans = Outfit({
   subsets: ['latin', 'latin-ext'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-date-sans',
