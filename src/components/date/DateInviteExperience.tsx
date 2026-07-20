@@ -4,13 +4,21 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DateAmbientBackground } from '@/components/date/DateAmbientBackground';
 import { DateGlassCard } from '@/components/date/DateGlassCard';
+import {
+  DateLanguageToggle,
+  DateLocaleProvider,
+  useDateLocale,
+} from '@/components/date/DateLocaleContext';
 import { DatePickerCard } from '@/components/date/DatePickerCard';
 import { FloatingHearts } from '@/components/date/FloatingHearts';
 import { HeartConfetti } from '@/components/date/HeartConfetti';
 import { RunawayNoButton } from '@/components/date/RunawayNoButton';
 import { SuccessScreen } from '@/components/date/SuccessScreen';
 import { YesButton } from '@/components/date/YesButton';
-import { buildQuestion } from '@/lib/date/utils';
+import {
+  buildLocalizedQuestion,
+  localizeApiError,
+} from '@/lib/date/i18n';
 import type { DateInvite, DateResponse } from '@/lib/date/supabase';
 
 type Phase = 'question' | 'picking' | 'success';
@@ -20,8 +28,6 @@ type Props = {
   initialResponse: DateResponse | null;
   cookieAnsweredDate: string | null;
 };
-
-const DEFAULT_HINT = 'Bir jest yeter — doğru olanı seçin.';
 
 function storageKey(slug: string) {
   return `date_answered_${slug}`;
@@ -43,11 +49,12 @@ function getOrCreateSessionId(slug: string): string {
   }
 }
 
-export function DateInviteExperience({
+function DateInviteExperienceInner({
   invite,
   initialResponse,
   cookieAnsweredDate,
 }: Props) {
+  const { locale, t } = useDateLocale();
   const cardRef = useRef<HTMLDivElement>(null);
   const yesRef = useRef<HTMLButtonElement>(null);
 
@@ -56,22 +63,36 @@ export function DateInviteExperience({
 
   const [phase, setPhase] = useState<Phase>(initialDate ? 'success' : 'question');
   const [selectedDate, setSelectedDate] = useState(initialDate || '');
-  const [hint, setHint] = useState(DEFAULT_HINT);
+  const [hint, setHint] = useState(t.defaultHint);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [rawError, setRawError] = useState<string | null>(null);
   const [celebrate, setCelebrate] = useState(Boolean(initialDate));
   const [calm, setCalm] = useState(Boolean(initialDate));
 
   const question = useMemo(
     () =>
-      buildQuestion(
+      buildLocalizedQuestion(
+        locale,
         invite.name,
         invite.honorific,
         invite.male_name,
         invite.custom_question
       ),
-    [invite]
+    [invite, locale]
   );
+
+  useEffect(() => {
+    setHint(t.defaultHint);
+  }, [locale, t.defaultHint]);
+
+  useEffect(() => {
+    if (!rawError) {
+      setError(null);
+      return;
+    }
+    setError(localizeApiError(rawError, locale));
+  }, [locale, rawError]);
 
   useEffect(() => {
     void fetch('/api/date/view', {
@@ -102,19 +123,19 @@ export function DateInviteExperience({
 
   useEffect(() => {
     if (phase !== 'success' || calm) return;
-    const t = window.setTimeout(() => setCalm(true), 4800);
-    return () => window.clearTimeout(t);
+    const timer = window.setTimeout(() => setCalm(true), 4800);
+    return () => window.clearTimeout(timer);
   }, [phase, calm]);
 
   const onYes = () => {
     setPhase('picking');
-    setError(null);
+    setRawError(null);
   };
 
   const onConfirm = async () => {
     if (!selectedDate || loading) return;
     setLoading(true);
-    setError(null);
+    setRawError(null);
     try {
       const session_id = getOrCreateSessionId(invite.slug);
       const res = await fetch('/api/date/respond', {
@@ -132,7 +153,7 @@ export function DateInviteExperience({
         selected_date?: string;
       };
       if (!res.ok) {
-        setError(data.error || 'Bir hata oluştu');
+        setRawError(data.error || t.errorFallback);
         setLoading(false);
         return;
       }
@@ -150,7 +171,7 @@ export function DateInviteExperience({
       setCalm(false);
       setPhase('success');
     } catch {
-      setError('Bağlantı hatası. Lütfen tekrar deneyin.');
+      setRawError(t.errorNetwork);
     } finally {
       setLoading(false);
     }
@@ -161,29 +182,38 @@ export function DateInviteExperience({
 
   if (!invite.is_active && phase === 'question' && !initialDate) {
     return (
-      <div className="relative flex min-h-[100dvh] items-center justify-center px-5">
+      <div className="relative flex min-h-[100dvh] items-center justify-center px-5 pt-[max(3.5rem,env(safe-area-inset-top))]">
         <DateAmbientBackground />
+        <div className="absolute inset-x-5 top-[max(1rem,env(safe-area-inset-top))] mx-auto w-full max-w-[380px]">
+          <div className="relative h-10">
+            <DateLanguageToggle />
+          </div>
+        </div>
         <DateGlassCard>
-          <p className="text-center text-[15px] text-[#5c3340]">
-            Bu davet şu an aktif değil.
-          </p>
+          <p className="text-center text-[15px] text-[#5c3340]">{t.inactive}</p>
         </DateGlassCard>
       </div>
     );
   }
 
   return (
-    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-x-hidden px-5 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-[max(1.25rem,env(safe-area-inset-top))]">
+    <div className="relative flex min-h-[100dvh] items-center justify-center overflow-x-hidden px-5 pb-[max(1.75rem,env(safe-area-inset-bottom))] pt-[max(3.75rem,calc(env(safe-area-inset-top)+2.75rem))]">
       <DateAmbientBackground tone={tone} />
       <FloatingHearts count={phase === 'success' ? 10 : 6} />
       <HeartConfetti active={celebrate && phase === 'success' && !calm} />
+
+      <div className="absolute inset-x-5 top-[max(1rem,env(safe-area-inset-top))] z-30 mx-auto w-full max-w-[380px]">
+        <div className="relative h-10">
+          <DateLanguageToggle />
+        </div>
+      </div>
 
       <div className="relative z-10 w-full">
         <DateGlassCard cardRef={cardRef}>
           <AnimatePresence mode="wait">
             {phase === 'question' ? (
               <motion.div
-                key="q"
+                key={`q-${locale}`}
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12, transition: { duration: 0.28 } }}
@@ -191,7 +221,7 @@ export function DateInviteExperience({
                 className="flex min-h-[21.5rem] flex-col"
               >
                 <p className="mb-5 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-[#9a7480]">
-                  Size özel bir soru var
+                  {t.eyebrow}
                 </p>
 
                 <h1 className="mb-6 text-balance text-center font-serif text-[1.65rem] font-medium leading-[1.28] tracking-[-0.02em] text-[#3d1f2a] sm:text-[1.9rem]">
@@ -227,7 +257,7 @@ export function DateInviteExperience({
             ) : null}
 
             {phase === 'picking' ? (
-              <motion.div key="pick">
+              <motion.div key={`pick-${locale}`}>
                 <DatePickerCard
                   selectedDate={selectedDate}
                   onChange={setSelectedDate}
@@ -239,7 +269,7 @@ export function DateInviteExperience({
             ) : null}
 
             {phase === 'success' ? (
-              <motion.div key="ok">
+              <motion.div key={`ok-${locale}`}>
                 <SuccessScreen
                   name={invite.name}
                   honorific={invite.honorific}
@@ -252,5 +282,13 @@ export function DateInviteExperience({
         </DateGlassCard>
       </div>
     </div>
+  );
+}
+
+export function DateInviteExperience(props: Props) {
+  return (
+    <DateLocaleProvider>
+      <DateInviteExperienceInner {...props} />
+    </DateLocaleProvider>
   );
 }

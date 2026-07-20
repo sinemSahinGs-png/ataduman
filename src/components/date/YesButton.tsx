@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { forwardRef } from 'react';
+import { useDateLocale } from '@/components/date/DateLocaleContext';
 
 type Props = {
   onClick: () => void;
@@ -11,6 +12,7 @@ type Props = {
 export const YesButton = forwardRef<HTMLButtonElement, Props>(
   function YesButton({ onClick, className = '' }, ref) {
     const reduce = useReducedMotion();
+    const { t } = useDateLocale();
 
     return (
       <motion.button
@@ -26,7 +28,7 @@ export const YesButton = forwardRef<HTMLButtonElement, Props>(
       >
         <span className="date-yes-sheen" aria-hidden />
         <span className="date-yes-glow" aria-hidden />
-        <span className="relative z-[1]">EVET</span>
+        <span className="relative z-[1]">{t.yes}</span>
       </motion.button>
     );
   }

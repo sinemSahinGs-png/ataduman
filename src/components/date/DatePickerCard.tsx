@@ -1,7 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { formatTurkishDate, todayISODate } from '@/lib/date/utils';
+import { useDateLocale } from '@/components/date/DateLocaleContext';
+import { formatInviteDate } from '@/lib/date/i18n';
+import { todayISODate } from '@/lib/date/utils';
 
 type Props = {
   selectedDate: string;
@@ -18,8 +20,9 @@ export function DatePickerCard({
   loading,
   error,
 }: Props) {
+  const { locale, t } = useDateLocale();
   const min = todayISODate();
-  const label = selectedDate ? formatTurkishDate(selectedDate, true) : null;
+  const label = selectedDate ? formatInviteDate(selectedDate, locale, true) : null;
 
   return (
     <motion.div
@@ -30,17 +33,17 @@ export function DatePickerCard({
       className="flex min-h-[21rem] w-full flex-col"
     >
       <p className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.28em] text-[#9a7480]">
-        Bir sonraki adım
+        {t.pickerEyebrow}
       </p>
       <h2 className="mb-2 text-center font-serif text-[1.75rem] font-medium leading-tight tracking-[-0.02em] text-[#3d1f2a] sm:text-[1.95rem]">
-        Harika bir karar.
+        {t.pickerTitle}
       </h2>
       <p className="mb-8 text-center text-[13.5px] leading-relaxed text-[#7d5964]">
-        Size uygun bir gün seçin.
+        {t.pickerSubtitle}
       </p>
 
       <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.2em] text-[#9a7480]">
-        Date tarihi
+        {t.pickerLabel}
       </label>
       <input
         type="date"
@@ -53,10 +56,11 @@ export function DatePickerCard({
       <p className="mt-3 min-h-[1.25rem] text-center text-[13px] text-[#7d5964]">
         {label ? (
           <>
-            Seçilen · <span className="font-medium text-[#5c3340]">{label}</span>
+            {t.pickerSelected} ·{' '}
+            <span className="font-medium text-[#5c3340]">{label}</span>
           </>
         ) : (
-          'Takvimden bir tarih seçin'
+          t.pickerEmpty
         )}
       </p>
 
@@ -76,7 +80,7 @@ export function DatePickerCard({
         >
           <span className="date-yes-sheen" aria-hidden />
           <span className="relative z-[1]">
-            {loading ? 'Onaylanıyor…' : 'Date’i onayla'}
+            {loading ? t.pickerConfirming : t.pickerConfirm}
           </span>
         </motion.button>
       </div>

@@ -9,27 +9,7 @@ import {
   useState,
   type PointerEvent as ReactPointerEvent,
 } from 'react';
-
-const LABELS = [
-  'Hayır',
-  'Emin misiniz?',
-  'Tekrar düşünün',
-  'Yanlış seçenek',
-  'O buton bugün yoğun',
-  'EVET daha mantıklı',
-  'Bir daha deneyin',
-  'Buna basmak zor 🙂',
-  'Sanırım diğer buton daha iyi',
-];
-
-const HINTS = [
-  'Güzel cevaplar genelde acele etmez.',
-  'Bu seçenek biraz çekingen — diğerini deneyin.',
-  'Kalbiniz muhtemelen doğru yeri biliyor.',
-  'Nazik bir teklif, net bir jest ister.',
-  'Kaçan butonlar, doğru kararları hatırlatır.',
-  'Belki de EVET daha zarif duruyor.',
-];
+import { useDateLocale } from '@/components/date/DateLocaleContext';
 
 const BTN_H = 52;
 
@@ -40,10 +20,6 @@ type Props = {
 };
 
 type Pos = { x: number; y: number };
-
-function clamp(n: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, n));
-}
 
 function hitsYesZone(
   x: number,
@@ -62,6 +38,9 @@ function hitsYesZone(
 }
 
 export function RunawayNoButton({ cardRef, yesRef, onHintChange }: Props) {
+  const { locale, t } = useDateLocale();
+  const labels = t.noLabels;
+  const hints = t.noHints;
   const btnRef = useRef<HTMLButtonElement>(null);
   const reduce = useReducedMotion();
   const [escaped, setEscaped] = useState(false);
@@ -71,6 +50,10 @@ export function RunawayNoButton({ cardRef, yesRef, onHintChange }: Props) {
   const [flash, setFlash] = useState(0);
   const lastFlee = useRef(0);
   const fleeing = useRef(false);
+
+  useEffect(() => {
+    setFlash((n) => n + 1);
+  }, [locale]);
 
   const measure = useCallback(() => {
     const btn = btnRef.current;
@@ -162,11 +145,11 @@ export function RunawayNoButton({ cardRef, yesRef, onHintChange }: Props) {
       setFlash((n) => n + 1);
       setAttempts((a) => {
         const n = a + 1;
-        onHintChange(HINTS[(n - 1) % HINTS.length]);
+        onHintChange(hints[(n - 1) % hints.length]);
         return n;
       });
     },
-    [escaped, measure, onHintChange, pickPos]
+    [escaped, hints, measure, onHintChange, pickPos]
   );
 
   // Desktop proximity
@@ -205,7 +188,7 @@ export function RunawayNoButton({ cardRef, yesRef, onHintChange }: Props) {
     flee(true);
   };
 
-  const label = LABELS[Math.min(attempts, LABELS.length - 1)];
+  const label = labels[Math.min(attempts, labels.length - 1)];
 
   return (
     <motion.button
