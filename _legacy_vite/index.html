@@ -91,21 +91,27 @@ workflow.<span class="tok-fn">automate</span>({
       <span class="code-pulse"></span>
     </div>
 
-    <nav class="site-nav" aria-label="Ana menü">
+    <nav class="site-nav" data-i18n-attr="aria-label:navAria" aria-label="Ana menü">
       <a class="nav-brand" href="#top">ATA DUMAN</a>
-      <button
-        class="nav-index"
-        type="button"
-        aria-expanded="false"
-        aria-controls="site-menu"
-        id="menu-toggle"
-      >
-        <span class="nav-index-label">Anasayfa</span>
-        <span class="nav-index-glyph" aria-hidden="true">
-          <span></span>
-          <span></span>
-        </span>
-      </button>
+      <div class="nav-actions">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="tr" class="is-active" aria-pressed="true">TR</button>
+          <button type="button" data-lang="en" aria-pressed="false">ENG</button>
+        </div>
+        <button
+          class="nav-index"
+          type="button"
+          aria-expanded="false"
+          aria-controls="site-menu"
+          id="menu-toggle"
+        >
+          <span class="nav-index-label" data-i18n="navHome">Anasayfa</span>
+          <span class="nav-index-glyph" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
     </nav>
 
     <div
@@ -114,31 +120,32 @@ workflow.<span class="tok-fn">automate</span>({
       role="dialog"
       aria-modal="true"
       aria-hidden="true"
+      data-i18n-attr="aria-label:menuAria"
       aria-label="Site indeksi"
     >
       <ol class="site-menu-list">
         <li style="--i: 0">
-          <a href="#about"><span>01</span> Hakkında</a>
+          <a href="#about"><span>01</span> <span data-i18n="menuAbout">Hakkında</span></a>
         </li>
         <li style="--i: 1">
-          <a href="#works"><span>02</span> Geliştirilen Sistemler</a>
+          <a href="#works"><span>02</span> <span data-i18n="menuWorks">Geliştirilen Sistemler</span></a>
         </li>
         <li style="--i: 2">
-          <a href="#portfolio"><span>03</span> Portfolyo</a>
+          <a href="#portfolio"><span>03</span> <span data-i18n="menuPortfolio">Portfolyo</span></a>
         </li>
         <li style="--i: 3">
-          <a href="#capabilities"><span>04</span> Yetenekler</a>
+          <a href="#capabilities"><span>04</span> <span data-i18n="menuCapabilities">Yetenekler</span></a>
         </li>
         <li style="--i: 4">
-          <a href="#process"><span>05</span> Süreç</a>
+          <a href="#process"><span>05</span> <span data-i18n="menuProcess">Süreç</span></a>
         </li>
         <li style="--i: 5">
-          <a href="#commission"><span>06</span> İletişim</a>
+          <a href="#commission"><span>06</span> <span data-i18n="menuContact">İletişim</span></a>
         </li>
       </ol>
     </div>
 
-    <section class="hero" id="top" aria-label="Portre görünümü">
+    <section class="hero" id="top" data-i18n-attr="aria-label:heroAria" aria-label="Portre görünümü">
       <div class="hero-field" aria-hidden="true">
         <div class="hero-glow"></div>
         <div class="hero-scan"></div>
@@ -167,13 +174,13 @@ workflow.<span class="tok-fn">automate</span>({
       </div>
       <canvas></canvas>
       <div class="hero-copy">
-        <p class="hero-meta">Portfolyo / 2026</p>
-        <h1 class="hero-title">WEB<br />SİSTEMLERİ</h1>
-        <p class="hero-tag">
+        <p class="hero-meta" data-i18n="heroMeta">Portfolyo / 2026</p>
+        <h1 class="hero-title" data-i18n="heroTitle" data-i18n-html>WEB<br />SİSTEMLERİ</h1>
+        <p class="hero-tag" data-i18n="heroTag" data-i18n-html>
           Strateji, arayüz ve kodla kurulan<br />
           markaya özel dijital deneyimler.
         </p>
-        <p class="hero-desc">Web tasarımı / Geliştirme / Otomasyon</p>
+        <p class="hero-desc" data-i18n="heroDesc">Web tasarımı / Geliştirme / Otomasyon</p>
       </div>
     </section>
 
@@ -181,92 +188,92 @@ workflow.<span class="tok-fn">automate</span>({
       <div class="marquee" data-reveal aria-hidden="true">
         <div class="marquee-track">
           <span>ATA DUMAN</span><span class="dot"></span>
-          <span>Özel Web Sitesi Tasarımı</span><span class="dot"></span>
-          <span>Web Geliştirme</span><span class="dot"></span>
-          <span>Instagram Otomasyonu</span><span class="dot"></span>
-          <span>İçerik Tasarımı</span><span class="dot"></span>
-          <span>Promosyon Ürün Tasarımı</span><span class="dot"></span>
+          <span data-i18n="marqueeCustom">Özel Web Sitesi Tasarımı</span><span class="dot"></span>
+          <span data-i18n="marqueeDev">Web Geliştirme</span><span class="dot"></span>
+          <span data-i18n="marqueeIg">Instagram Otomasyonu</span><span class="dot"></span>
+          <span data-i18n="marqueeContent">İçerik Tasarımı</span><span class="dot"></span>
+          <span data-i18n="marqueePromo">Promosyon Ürün Tasarımı</span><span class="dot"></span>
           <span>ATA DUMAN</span><span class="dot"></span>
-          <span>Özel Web Sitesi Tasarımı</span><span class="dot"></span>
-          <span>Web Geliştirme</span><span class="dot"></span>
-          <span>Instagram Otomasyonu</span><span class="dot"></span>
-          <span>İçerik Tasarımı</span><span class="dot"></span>
-          <span>Promosyon Ürün Tasarımı</span><span class="dot"></span>
+          <span data-i18n="marqueeCustom">Özel Web Sitesi Tasarımı</span><span class="dot"></span>
+          <span data-i18n="marqueeDev">Web Geliştirme</span><span class="dot"></span>
+          <span data-i18n="marqueeIg">Instagram Otomasyonu</span><span class="dot"></span>
+          <span data-i18n="marqueeContent">İçerik Tasarımı</span><span class="dot"></span>
+          <span data-i18n="marqueePromo">Promosyon Ürün Tasarımı</span><span class="dot"></span>
         </div>
       </div>
 
       <div class="index-strip" data-reveal>
         <span>N — 01</span>
         <span class="rule-inline"></span>
-        <span>Anasayfa 2025 / 2026</span>
+        <span data-i18n="stripHome">Anasayfa 2025 / 2026</span>
         <span class="rule-inline"></span>
-        <span>Sayı 001</span>
+        <span data-i18n="stripIssue">Sayı 001</span>
         <span class="rule-inline"></span>
-        <span>Rotasyonda</span>
+        <span data-i18n="stripRotate">Rotasyonda</span>
       </div>
 
       <section class="section about" id="about">
         <header class="section-head" data-reveal>
-          <p class="section-meta">01 — Hakkında / Manifesto</p>
+          <p class="section-meta" data-i18n="aboutMeta">01 — Hakkında / Manifesto</p>
           <p class="section-folio">s. 014</p>
         </header>
         <div class="about-grid">
           <div class="about-lead">
             <h2 class="about-title">
               <span class="about-title-line">
-                <span class="hero-word">MARKANIZA</span>
+                <span class="hero-word" data-i18n="aboutW1">MARKANIZA</span>
               </span>
               <span class="about-title-line">
-                <span class="hero-word">ÖZEL</span>
-                <span class="hero-word hero-word--accent">WEB</span>
+                <span class="hero-word" data-i18n="aboutW2">ÖZEL</span>
+                <span class="hero-word hero-word--accent" data-i18n="aboutW3">WEB</span>
               </span>
               <span class="about-title-line">
-                <span class="hero-word hero-word--accent">SİTELERİ</span><span class="hero-word hero-word--dot">.</span>
+                <span class="hero-word hero-word--accent" data-i18n="aboutW4">SİTELERİ</span><span class="hero-word hero-word--dot">.</span>
               </span>
             </h2>
             <p class="about-services">
-              <span class="about-service">KURUMSAL WEB</span>
+              <span class="about-service" data-i18n="aboutSvc1">KURUMSAL WEB</span>
               <span class="about-services-sep">/</span>
-              <span class="about-service">GELİŞTİRME</span>
+              <span class="about-service" data-i18n="aboutSvc2">GELİŞTİRME</span>
               <span class="about-services-sep">/</span>
-              <span class="about-service">OTOMASYON</span>
+              <span class="about-service" data-i18n="aboutSvc3">OTOMASYON</span>
               <span class="about-services-sep">/</span>
-              <span class="about-service">İÇERİK</span>
+              <span class="about-service" data-i18n="aboutSvc4">İÇERİK</span>
               <span class="about-services-sep">/</span>
-              <span class="about-service">PROMOSYON</span>
+              <span class="about-service" data-i18n="aboutSvc5">PROMOSYON</span>
             </p>
           </div>
           <div class="about-body">
             <p class="lede about-block">
               <span class="drop-cap" aria-hidden="true">A</span><span class="sr-only">Ata</span><span aria-hidden="true">ta</span>
-              Duman; kurumsal web tasarımı, web geliştirme ve dijital otomasyon
-              alanlarında çalışan bağımsız bir tasarımcı ve geliştiricidir.
+              <span data-i18n="aboutP1"> Duman; kurumsal web tasarımı, web geliştirme ve dijital otomasyon
+              alanlarında çalışan bağımsız bir tasarımcı ve geliştiricidir.</span>
             </p>
-            <p class="about-block">
+            <p class="about-block" data-i18n="aboutP2">
               Her proje; markanın hedeflerine, içerik yapısına ve kullanıcı
               ihtiyaçlarına göre sıfırdan planlanır. Sonuç; hızlı, mobil uyumlu,
               yönetilebilir ve markaya özel bir web sitesidir.
             </p>
-            <p class="about-block">
+            <p class="about-block" data-i18n="aboutP3">
               Instagram otomasyonu, içerik tasarımı ve promosyon ürünleri; web
               projelerini destekleyen tamamlayıcı hizmetlerdir.
             </p>
             <dl class="meta-list">
               <div class="meta-row">
-                <dt>Sınıf</dt>
-                <dd>Web Tasarımı &amp; Geliştirme</dd>
+                <dt data-i18n="metaClass">Sınıf</dt>
+                <dd data-i18n="metaClassVal">Web Tasarımı &amp; Geliştirme</dd>
               </div>
               <div class="meta-row">
-                <dt>Yaklaşım</dt>
-                <dd>Markaya Özel · Sıfırdan</dd>
+                <dt data-i18n="metaApproach">Yaklaşım</dt>
+                <dd data-i18n="metaApproachVal">Markaya Özel · Sıfırdan</dd>
               </div>
               <div class="meta-row">
-                <dt>Odak</dt>
-                <dd>Kurumsal Web · Otomasyon</dd>
+                <dt data-i18n="metaFocus">Odak</dt>
+                <dd data-i18n="metaFocusVal">Kurumsal Web · Otomasyon</dd>
               </div>
               <div class="meta-row">
-                <dt>Durum</dt>
-                <dd><span class="status-dot"></span> Çevrimiçi</dd>
+                <dt data-i18n="metaStatus">Durum</dt>
+                <dd><span class="status-dot"></span> <span data-i18n="metaStatusVal">Çevrimiçi</span></dd>
               </div>
             </dl>
           </div>
@@ -275,10 +282,10 @@ workflow.<span class="tok-fn">automate</span>({
 
       <section class="section works" id="works" data-reveal>
         <header class="section-head">
-          <p class="section-meta">02 — Geliştirilen Sistemler</p>
+          <p class="section-meta" data-i18n="worksMeta">02 — Geliştirilen Sistemler</p>
           <p class="section-folio">s. 028</p>
         </header>
-        <h2 class="section-title">Geliştirilen Sistemler</h2>
+        <h2 class="section-title" data-i18n="worksTitle">Geliştirilen Sistemler</h2>
 
         <ol class="work-list">
           <li class="work" data-reveal>
@@ -288,6 +295,7 @@ workflow.<span class="tok-fn">automate</span>({
               <img
                 class="work-image"
                 src="/work-01.png?v=2"
+                data-i18n-attr="alt:work1Alt"
                 alt="Web tasarımı projesi"
                 width="800"
                 height="600"
@@ -295,18 +303,18 @@ workflow.<span class="tok-fn">automate</span>({
               />
             </div>
             <div class="work-info">
-              <p class="work-meta">(01 / 03) · Tasarım · 2025</p>
-              <h3 class="work-title">Özel Web Sitesi Tasarımı</h3>
-              <p class="work-body">
+              <p class="work-meta" data-i18n="work1Meta">(01 / 03) · Tasarım · 2025</p>
+              <h3 class="work-title" data-i18n="work1Title">Özel Web Sitesi Tasarımı</h3>
+              <p class="work-body" data-i18n="work1Body">
                 Netlik, hiyerarşi ve hareket etrafında kurulan premium web
                 siteleri — şablon gibi değil, düşünülmüş hissi veren işler.
               </p>
               <ul class="work-tags">
-                <li>Tasarım</li>
-                <li>Sanat yönetimi</li>
+                <li data-i18n="work1Tag1">Tasarım</li>
+                <li data-i18n="work1Tag2">Sanat yönetimi</li>
                 <li>UI</li>
               </ul>
-              <a class="work-cta" href="#commission">Projeyi gör →</a>
+              <a class="work-cta" href="#commission" data-i18n="workCta">Projeyi gör →</a>
             </div>
           </li>
 
@@ -317,6 +325,7 @@ workflow.<span class="tok-fn">automate</span>({
               <img
                 class="work-image"
                 src="/work-02.png?v=2"
+                data-i18n-attr="alt:work2Alt"
                 alt="Web geliştirme projesi"
                 width="800"
                 height="600"
@@ -324,18 +333,18 @@ workflow.<span class="tok-fn">automate</span>({
               />
             </div>
             <div class="work-info">
-              <p class="work-meta">(02 / 03) · Geliştirme · 2025</p>
-              <h3 class="work-title">Uygulama Geliştirme</h3>
-              <p class="work-body">
+              <p class="work-meta" data-i18n="work2Meta">(02 / 03) · Geliştirme · 2025</p>
+              <h3 class="work-title" data-i18n="work2Title">Uygulama Geliştirme</h3>
+              <p class="work-body" data-i18n="work2Body">
                 Tasarımı koruyan front-end üretimi — performans, etkileşim ve
                 üretimde temiz kalan sistemler.
               </p>
               <ul class="work-tags">
                 <li>Front-end</li>
-                <li>Hareket</li>
-                <li>Sistemler</li>
+                <li data-i18n="work2Tag2">Hareket</li>
+                <li data-i18n="work2Tag3">Sistemler</li>
               </ul>
-              <a class="work-cta" href="#commission">Projeyi gör →</a>
+              <a class="work-cta" href="#commission" data-i18n="workCta">Projeyi gör →</a>
             </div>
           </li>
 
@@ -346,6 +355,7 @@ workflow.<span class="tok-fn">automate</span>({
               <img
                 class="work-image"
                 src="/work-03.png?v=2"
+                data-i18n-attr="alt:work3Alt"
                 alt="Otomasyon projesi"
                 width="800"
                 height="600"
@@ -353,18 +363,18 @@ workflow.<span class="tok-fn">automate</span>({
               />
             </div>
             <div class="work-info">
-              <p class="work-meta">(03 / 03) · Otomasyon · 2026</p>
-              <h3 class="work-title">Instagram Otomasyonu</h3>
-              <p class="work-body">
+              <p class="work-meta" data-i18n="work3Meta">(03 / 03) · Otomasyon · 2026</p>
+              <h3 class="work-title" data-i18n="work3Title">Instagram Otomasyonu</h3>
+              <p class="work-body" data-i18n="work3Body">
                 İçerik ritmi için sakin işletim sistemleri — günlük sürtünme
                 olmadan tutarlı varlık sağlayan akışlar.
               </p>
               <ul class="work-tags">
-                <li>Otomasyon</li>
-                <li>İş akışı</li>
-                <li>Sosyal</li>
+                <li data-i18n="work3Tag1">Otomasyon</li>
+                <li data-i18n="work3Tag2">İş akışı</li>
+                <li data-i18n="work3Tag3">Sosyal</li>
               </ul>
-              <a class="work-cta" href="#commission">Projeyi gör →</a>
+              <a class="work-cta" href="#commission" data-i18n="workCta">Projeyi gör →</a>
             </div>
           </li>
         </ol>
@@ -372,10 +382,10 @@ workflow.<span class="tok-fn">automate</span>({
 
       <section class="section archive" id="portfolio" data-reveal>
         <header class="section-head">
-          <p class="section-meta">03 — Portfolyo</p>
+          <p class="section-meta" data-i18n="portfolioMeta">03 — Portfolyo</p>
           <p class="section-folio">s. 036</p>
         </header>
-        <h2 class="section-title">Portfolyo</h2>
+        <h2 class="section-title" data-i18n="portfolioTitle">Portfolyo</h2>
         <div class="archive-grid">
           <a
             class="study study--site"
@@ -472,85 +482,85 @@ workflow.<span class="tok-fn">automate</span>({
 
       <section class="section capabilities" id="capabilities" data-reveal>
         <header class="section-head">
-          <p class="section-meta">04 — Yetenekler</p>
+          <p class="section-meta" data-i18n="capsMeta">04 — Yetenekler</p>
           <p class="section-folio">s. 042</p>
         </header>
-        <h2 class="section-title">Yetenekler</h2>
+        <h2 class="section-title" data-i18n="capsTitle">Yetenekler</h2>
         <div class="capabilities-grid">
           <article class="cap-card" data-reveal>
             <p class="cap-index">↳ 01</p>
-            <h3 class="cap-title">Özel Web Sitesi Tasarımı</h3>
-            <p class="cap-body">
+            <h3 class="cap-title" data-i18n="cap1Title">Özel Web Sitesi Tasarımı</h3>
+            <p class="cap-body" data-i18n="cap1Body">
               Varlık sahibi bir site isteyen markalar için sanat yönetimi, yerleşim
               sistemleri ve arayüz tasarımı.
             </p>
-            <p class="cap-tags">Tasarım · UI · Yönlendirme</p>
+            <p class="cap-tags" data-i18n="cap1Tags">Tasarım · UI · Yönlendirme</p>
           </article>
           <article class="cap-card" data-reveal>
             <p class="cap-index">↳ 02</p>
-            <h3 class="cap-title">Web Geliştirme</h3>
-            <p class="cap-body">
+            <h3 class="cap-title" data-i18n="cap2Title">Web Geliştirme</h3>
+            <p class="cap-body" data-i18n="cap2Body">
               Hareket, yapı ve performansın zanaatın parçası sayıldığı front-end
               uygulaması.
             </p>
-            <p class="cap-tags">Kod · Hareket · Üretim</p>
+            <p class="cap-tags" data-i18n="cap2Tags">Kod · Hareket · Üretim</p>
           </article>
           <article class="cap-card" data-reveal>
             <p class="cap-index">↳ 03</p>
-            <h3 class="cap-title">Instagram Otomasyonu</h3>
-            <p class="cap-body">
+            <h3 class="cap-title" data-i18n="cap3Title">Instagram Otomasyonu</h3>
+            <p class="cap-body" data-i18n="cap3Body">
               Marka ritmine göre kurgulanmış zamanlama, akışlar ve içerik
               operasyonu — jenerik araçlar değil.
             </p>
-            <p class="cap-tags">Sosyal · Sistem · Ritim</p>
+            <p class="cap-tags" data-i18n="cap3Tags">Sosyal · Sistem · Ritim</p>
           </article>
           <article class="cap-card" data-reveal>
             <p class="cap-index">↳ 04</p>
-            <h3 class="cap-title">İçerik &amp; Ürünler</h3>
-            <p class="cap-body">
+            <h3 class="cap-title" data-i18n="cap4Title">İçerik &amp; Ürünler</h3>
+            <p class="cap-body" data-i18n="cap4Body">
               Dijital sistemle hizalı kalan içerik tasarımı ve promosyon ürün
               çalışmaları.
             </p>
-            <p class="cap-tags">İçerik · Baskı · Promo</p>
+            <p class="cap-tags" data-i18n="cap4Tags">İçerik · Baskı · Promo</p>
           </article>
         </div>
       </section>
 
       <section class="section process" id="process" data-reveal>
         <header class="section-head">
-          <p class="section-meta">05 — Süreç</p>
+          <p class="section-meta" data-i18n="processMeta">05 — Süreç</p>
           <p class="section-folio">s. 056</p>
         </header>
-        <h2 class="section-title">Süreç</h2>
+        <h2 class="section-title" data-i18n="processTitle">Süreç</h2>
         <div class="process-steps">
           <article class="process-step" data-reveal>
             <p class="process-num">01</p>
-            <h3 class="process-label">Brief</h3>
-            <p class="process-body">
+            <h3 class="process-label" data-i18n="process1Label">Brief</h3>
+            <p class="process-body" data-i18n="process1Body">
               Tek cümleye indirgenmiş bir brief. Moodboard’dan çok kısıtlar
               tercih edilir.
             </p>
           </article>
           <article class="process-step" data-reveal>
             <p class="process-num">02</p>
-            <h3 class="process-label">Konsept</h3>
-            <p class="process-body">
+            <h3 class="process-label" data-i18n="process2Label">Konsept</h3>
+            <p class="process-body" data-i18n="process2Body">
               Yapı, tipografi ve etkileşim; site açıklama gerektirmeden konuşana
               kadar düzenlenir.
             </p>
           </article>
           <article class="process-step" data-reveal>
             <p class="process-num">03</p>
-            <h3 class="process-label">İnce ayar</h3>
-            <p class="process-body">
+            <h3 class="process-label" data-i18n="process3Label">İnce ayar</h3>
+            <p class="process-body" data-i18n="process3Body">
               Boşluk, hareket ve hiyerarşi; hiçbir şey rastgele hissedilene kadar
               ayarlanır.
             </p>
           </article>
           <article class="process-step" data-reveal>
             <p class="process-num">04</p>
-            <h3 class="process-label">Deneyim</h3>
-            <p class="process-body">
+            <h3 class="process-label" data-i18n="process4Label">Deneyim</h3>
+            <p class="process-body" data-i18n="process4Body">
               Tam bir teslimat — tasarım, geliştirme ve ayakta duran sistemler.
             </p>
           </article>
@@ -559,36 +569,36 @@ workflow.<span class="tok-fn">automate</span>({
 
       <section class="section cta" id="commission" data-reveal>
         <header class="section-head section-head--dark">
-          <p class="section-meta">06 — Proje / İletişim</p>
+          <p class="section-meta" data-i18n="ctaMeta">06 — Proje / İletişim</p>
           <p class="section-folio">s. 084</p>
         </header>
-        <h2 class="cta-heading" aria-label="Yeni siten burada başlasın.">
+        <h2 class="cta-heading" data-i18n-attr="aria-label:ctaAria" aria-label="Yeni siten burada başlasın.">
           <span class="cta-line">
-            <span class="cta-word">YENİ</span>
-            <span class="cta-word">SİTEN</span>
+            <span class="cta-word" data-i18n="ctaW1">YENİ</span>
+            <span class="cta-word" data-i18n="ctaW2">SİTEN</span>
           </span>
-          <em class="cta-word cta-word--soft">burada</em>
-          <span class="cta-word">BAŞLASIN.</span>
+          <em class="cta-word cta-word--soft" data-i18n="ctaW3">burada</em>
+          <span class="cta-word" data-i18n="ctaW4">BAŞLASIN.</span>
         </h2>
-        <p class="cta-body">
+        <p class="cta-body" data-i18n="ctaBody">
           Kurumsal web sitesi, otomasyon veya dijital içerik projenizin
           detaylarını paylaşın. Bir iş günü içinde geri dönüş sağlanır.
         </p>
         <a class="cta-button" href="mailto:ata.duman@hotmail.com">
-          PROJEYİ BAŞLAT
+          <span data-i18n="ctaButton">PROJEYİ BAŞLAT</span>
           <span class="cta-glyph" aria-hidden="true">→</span>
         </a>
         <div class="cta-meta">
           <a href="mailto:ata.duman@hotmail.com">ata.duman@hotmail.com</a>
           <span class="rule-inline rule-inline--light"></span>
-          <span>Dünya çapında uygun</span>
+          <span data-i18n="ctaAvail">Dünya çapında uygun</span>
         </div>
       </section>
 
       <footer class="footer" data-reveal>
         <div class="footer-top">
           <p class="footer-brand">ATA DUMAN</p>
-          <p class="footer-tag"><em>Tasarım sistemleri / İnşa edilen deneyimler</em></p>
+          <p class="footer-tag"><em data-i18n="footerTag">Tasarım sistemleri / İnşa edilen deneyimler</em></p>
         </div>
         <div class="footer-contact">
           <a href="mailto:ata.duman@hotmail.com">ata.duman@hotmail.com</a>

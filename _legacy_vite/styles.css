@@ -196,6 +196,45 @@ button {
   letter-spacing: -0.012em;
 }
 
+.nav-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.28rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(17, 24, 32, 0.55);
+}
+
+.lang-switch button {
+  min-width: 2.4rem;
+  padding: 0.4rem 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(230, 236, 242, 0.55);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: color 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.lang-switch button:hover {
+  color: var(--ink);
+}
+
+.lang-switch button.is-active {
+  background: rgba(94, 234, 212, 0.14);
+  color: var(--accent);
+}
+
 .nav-index {
   display: inline-flex;
   align-items: center;

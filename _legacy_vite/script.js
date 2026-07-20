@@ -7,6 +7,9 @@ import {
 import './code-env.js';
 import './about-anim.js';
 import './cta-anim.js';
+import { initPortfolioI18n } from './i18n.js';
+
+initPortfolioI18n();
 
 const isCoarsePointer =
   window.matchMedia('(pointer: coarse)').matches ||
