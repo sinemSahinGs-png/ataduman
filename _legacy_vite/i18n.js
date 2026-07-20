@@ -225,28 +225,44 @@ function applyLocale(locale) {
     btn.classList.toggle('is-active', active);
     btn.setAttribute('aria-pressed', active ? 'true' : 'false');
   });
+}
 
+function localeFromQuery() {
   try {
-    window.parent.postMessage(
-      { type: 'ataduman-locale', locale: lang },
-      window.location.origin
-    );
+    const q = new URLSearchParams(window.location.search).get('lang');
+    if (q === 'en' || q === 'tr') return q;
   } catch {
     /* ignore */
   }
+  return null;
+}
+
+function navigateToLocale(locale) {
+  const target = locale === 'en' ? '/eng' : '/';
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.location.assign(target);
+      return;
+    }
+  } catch {
+    /* fall through */
+  }
+  window.location.assign(target);
 }
 
 export function initPortfolioI18n() {
-  let locale = readLocale();
+  const fromQuery = localeFromQuery();
+  const locale = fromQuery || readLocale();
+  if (fromQuery) writeLocale(fromQuery);
   applyLocale(locale);
 
   document.querySelectorAll('[data-lang]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const next = btn.getAttribute('data-lang');
       if (next !== 'tr' && next !== 'en') return;
-      locale = next;
-      writeLocale(locale);
-      applyLocale(locale);
+      if (next === locale) return;
+      writeLocale(next);
+      navigateToLocale(next);
     });
   });
 }
